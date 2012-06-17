@@ -1,0 +1,13 @@
+/*
+Theme Name: Scott Carmichael Wordpress 'Base' Theme
+Theme URI: http://www.scottcarmichael.co.uk
+Description: A base level Wordpress theme with some of the grity stuff already to go.
+Author: Scott Carmichael
+Author URI: http://www.scottcarmichael.co.uk
+Version: 1.0
+*/
+
+@import url("css/carmichaelize.css");
+
+@import url("css/stylesheet.css");
+ 
