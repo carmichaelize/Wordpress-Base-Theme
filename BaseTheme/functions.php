@@ -1,42 +1,21 @@
 <?php
-//Some simple code for our widget-enabled sidebar
-if ( function_exists('register_sidebar') )
-    register_sidebar();
 
-//Add support for Widget Areas
-add_action( 'init', 'register_my_menu' );
-add_action( 'init', 'footer_widgets' );
+//Globals
+define( 'TEMPLATE_PATH', get_bloginfo('stylesheet_directory') );
+define( 'TEMPLATE_ROOT', parse_url(TEMPLATE_PATH, PHP_URL_PATH) );
+define( 'IMAGE_PATH', TEMPLATE_PATH. "/images");
 
-//Create Primary Navigation
-function register_my_menu() {
-	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
-}
+//Helper Functions
+include_once('inc/helpers.php');
+include_once('inc/wp_helpers.php');
 
-//Create Footer Widgets
-function footer_widgets() {
-	
-	register_sidebar( array(
-		'name' => __( 'Footer Widget Area'),
-		'id' => 'footer-widget-area',
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
+//Theme Specific Functions
+include_once('inc/functions.php');
 
-}
-
-//Code for custom background support
-add_custom_background();
-
-//Enable post and comments RSS feed links to head
-add_theme_support( 'automatic-feed-links' );
-
-// Enable post thumbnails
-add_theme_support('post-thumbnails');
-set_post_thumbnail_size(520, 250, true);
-
-
+//Flush Rewrite Rules
+add_action('init', function(){
+	flush_rewrite_rules(false);
+});
 
 
 ?>

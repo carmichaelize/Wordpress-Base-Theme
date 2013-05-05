@@ -6,54 +6,10 @@
 
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 
-<!-- Title dependent on what content is being viewed-->
-
-<title>
-
-	<?php
-	
-	global $page, $paged;
-
-	wp_title( '-', true, 'right' );
-
-	bloginfo( 'name' );
-
-	$site_description = get_bloginfo( 'description', 'display' );
-	if ( $site_description && ( is_home() || is_front_page() ) )
-		echo " - $site_description";
-
-	if ( $paged >= 2 || $page >= 2 )
-		echo ' - ' . sprintf( __( 'Page %s', 'twentyten' ), max( $paged, $page ) );
-
-	?>
-
-</title>
-
-<!-- Meta dependent on what content is being viewed-->
-
-<meta name="description" content="<?php if ( is_single() ) {
-        single_post_title('', true); 
-    } else {
-        bloginfo('name'); echo " - "; bloginfo('description');
-    }
-    ?>" />
-
-
-<?php global $post;
-if( is_single() || is_page()) :
-	$tags = get_the_tags($post->ID);
-	if($tags) :
-		foreach($tags as $tag) :
-			$sep = (empty($keywords)) ? '' : ', ';
-			$keywords .= $sep . $tag->name;
-		endforeach;
-?>
-<meta name="keywords" content="<?php echo $keywords; ?>" />
-<?php
-	endif;
-endif;
-?>
-
+<!-- Page Meta Class ('inc/wp_helpers.php') -->
+<title><?php echo page_meta::title(); ?></title>
+<meta name="description" content="<?php echo page_meta::description(); ?>" />
+<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
 
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 
@@ -89,5 +45,17 @@ endif;
 	</div>
 
 <div id="mainContent">
+
+	<?php 
+
+// echo SC_Input::get('test', 'scott');
+
+// echo SC_PageMeta::get_title();
+
+	//var_dump( get_bloginfo('all') );
+
+var_dump(page_meta::description());
+
+?>
 
   

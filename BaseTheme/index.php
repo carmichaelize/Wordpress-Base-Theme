@@ -1,14 +1,49 @@
 <?php get_header(); ?>
 
+<?php 
+
+//echo Input::get('test', 'scott');
+
+//var_dump(the_post()); 
+
+//$post = the_post();
+
+
+
+//foreach(the_post() as $post){
+
+//var_dump($post);
+
+
+
+//}
+
+
+?>
+
 	<div id="content">
-		<?php if(have_posts()) : ?><?php while(have_posts()) : the_post(); ?>
+		<?php if(have_posts()) : while(have_posts()) {  ?>
+
+		<?php
+
+		the_post();
+
+		//$data = get_the_ID();
+
+		$data = get_post_meta(get_the_ID(), 'sc_page_template_style');
+
+		//s$data = $data->template_style[0];
+			var_dump($data);
+			//var_dump($data[0]['template']);
+		?>
+
 		
 		<div class="post">
 		<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 		
 			<div class="entry">
 
-				<div class="postmetadata">
+				<!-- <div class="postmetadata">
 				
 					Posted in <?php the_category(', ') ?> by  <?php the_author_posts_link(); ?> 
 
@@ -24,7 +59,7 @@
 
 					<?php the_tags('Tags:', ', ', ''); ?> 
 
-				</div>
+				</div> -->
 
 				<?php the_post_thumbnail(); ?>
 				
@@ -36,7 +71,7 @@
 			</div>
 		</div>
 
-		<?php endwhile; ?>
+		<?php } ?>
 		
 		<div class="navigation">
 		<?php posts_nav_link(); ?>

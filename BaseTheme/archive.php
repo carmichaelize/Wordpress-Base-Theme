@@ -8,7 +8,7 @@
 		<?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
 			<?php /* If this is a category archive */ if (is_category()) { ?>
 				<h2>Archive for the &#8216;<?php single_cat_title(); ?>&#8217; Category:</h2>
-			<?php /* If this is a tag archive */ } elseif(is_tag() ) { ?>
+			<?php /* If this is a tag archive */ } elseif(is_tag() || is_tax() ) { ?>
 				<h2>Posts Tagged &#8216;<?php single_tag_title(); ?>&#8217;</h2>
 			<?php /* If this is a daily archive */ } elseif (is_day()) { ?>
 				<h2>Archive for <?php the_time('F jS, Y'); ?>:</h2>
