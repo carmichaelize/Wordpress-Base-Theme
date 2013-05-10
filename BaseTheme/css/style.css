@@ -1,0 +1,240 @@
+/* Default Styling */
+body {
+  font-family: Arial, Helvetica, Georgia, Sans-serif;
+  font-size: 1.4em;
+  background: #fff;
+  color: #000;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover{
+  color: #5f5f5f;
+}
+
+p, pre {
+    margin-bottom:15px;
+}
+
+/* Header Styles */
+
+h1, h2, h3, h4, h5, h6 {
+    margin:0 0 10px 0;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+h4 {
+    font-size: 1.4em;
+}
+
+h5 {
+    font-size: 1.4em;
+}
+
+h6 {
+    font-size: 1.4em;
+}
+
+/* Site Styling */
+
+.wrapper{
+  position: relative;
+  margin: 0 auto;
+  width: 960px;
+  background: #ccc;
+}
+
+#header {
+
+}
+
+.inner-wrapper {
+  padding:20px;
+}
+
+#footer {
+
+}
+
+/* Main Navigation */
+
+.top-nav{
+  position: relative;
+}
+
+.top-nav ul{
+  list-style-type:none;
+  padding:0;
+  margin:0;
+  background: #000;
+}
+
+.top-nav li{
+  position: relative;
+  float:left;
+}
+
+.top-nav a{
+  display:block;
+  text-decoration:none;
+  color:#fff;
+  padding:0 15px 10px 0;
+  font-size:13px; 
+  font-weight:bold;
+}
+
+/*.top-nav li ul{
+  display:none;
+  top:40px;
+  position:absolute;
+  z-index:99999;
+  background: #212121;
+}
+
+.top-nav li:hover ul {
+  display:block;
+}*/
+
+
+/* Site Content */
+
+#content {
+  float: left;
+  width: 520px;
+}
+
+/* Sidebar */
+#sidebar{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  float: right;
+  width: 200px;
+}
+
+#sidebar li{
+
+}
+
+#sidebar li ul{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+
+#sidebar li ul li{
+
+}
+
+#sidebar li a{
+
+}
+
+/* Footer */
+
+#footer{
+  background: #ccc;
+}
+
+.footerBucket {
+  float:left;
+  width:160px;
+  margin-right:10px;
+}
+
+.footerBucket ul {
+  list-style-type:none;
+  padding:0;
+  margin:0;
+}
+
+/* Comments */
+
+.gravatar{
+  float: right;
+}
+
+.comments-template{
+  margin: 10px 0 0;
+  padding: 30px 0 0;
+}
+
+.comments-template ol{
+  margin: 0;
+  padding: 0 0 15px;
+  list-style: none;
+}
+
+.comments-template ol li{
+  margin: 10px 0 0;
+  line-height: 18px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.comments-template textarea{
+  width: 500px;
+}
+
+/* Wordpress Hooking Classes */
+
+.wp-caption {
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  -khtml-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px; /* optional rounded corners for browsers that support it */
+  margin: 10px;
+  padding-top: 4px;
+  text-align: center;
+}
+
+.wp-caption img {
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+}
+
+.wp-caption p.wp-caption-text {
+  font-size: 11px;
+  line-height: 17px;
+  margin: 0;
+  padding: 0 4px 5px;
+}
+
+/* Standard Media Queries (change to 'max/min-device-width' to traget non desktop only) */
+
+/* iPads (landscape) ----------- */
+@media only screen and (max-width : 1024px) {
+ 
+}
+
+/* iPads (portrait) ----------- */
+@media only screen and (max-width : 768px) {
+  
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (max-width : 480px) {
+ 
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+ 
+}

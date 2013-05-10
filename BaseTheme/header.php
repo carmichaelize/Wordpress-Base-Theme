@@ -1,61 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" <?php language_attributes(); ?>><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" <?php language_attributes(); ?>><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" <?php language_attributes(); ?>> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" <?php language_attributes(); ?>><!--<![endif]-->
+	<head>
+		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 
-<html <?php language_attributes(); ?>>
+		<!-- Page Meta Class ('inc/wp_helpers.php') -->
+		<title><?php echo page_meta::title(); ?></title>
+		<meta name="description" content="<?php echo page_meta::description(); ?>" />
+		<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
 
-<head>
+		<!-- Enable Responsive Techniques -->
+	  	<!--<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />-->
 
-<meta charset="<?php bloginfo( 'charset' ); ?>" />
+		<link rel="profile" href="http://gmpg.org/xfn/11" />
 
-<!-- Page Meta Class ('inc/wp_helpers.php') -->
-<title><?php echo page_meta::title(); ?></title>
-<meta name="description" content="<?php echo page_meta::description(); ?>" />
-<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
+		<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+		<!--[if IE 7]>
+	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.min.css" />
+	  	<![endif]-->
 
-<link rel="profile" href="http://gmpg.org/xfn/11" />
-
-<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-
-<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
 
-<link rel="profile" href="http://gmpg.org/xfn/11" />
-<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-<link rel="shortcut icon" href="<?php bloginfo('template_directory'); ?>/images/favicon.ico" /><!--favicon-->
-<?php
-	
-	if ( is_singular() && get_option( 'thread_comments' ) )
-		wp_enqueue_script( 'comment-reply' );
+		<link rel="profile" href="http://gmpg.org/xfn/11" />
+		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+		<link rel="shortcut icon" href="<?php echo TEMPLATE_PATH ?>/images/favicon.ico" />
 
-	wp_head();
-?>
-</head>
+		<!-- Modenizer includes HTML5 shim, delete as required -->
+	  	<script src="<?php echo TEMPLATE_PATH; ?>/js/modernizr-2.6.2.min.js"></script>
 
-<body>
+		<?php
+			if ( is_singular() && get_option( 'thread_comments' ) )
+				wp_enqueue_script( 'comment-reply' );
 
-<div id="wrapper">
-	
-	<div id="header">
-		
-		<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
+			wp_head();
+		?>
+	</head>
 
-		<?php wp_nav_menu( array( 'sort_column' => 'menu_order', 'menu_class' => 'topNav', 'theme_location' => 'primary-menu' ) ); ?>
+	<body>
 
-		<div class="clear"></div>
+		<div class="wrapper">
+			
+			<header id="header">
+				
+				<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
 
-	</div>
+				<?php
+					if( has_nav_menu('primary_menu' )){
+						wp_nav_menu(array(  
+							'container'=> 'nav',
+							'container_class' => 'top-nav',
+							'theme_location' => 'primary-menu',
+							'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s<div class="clear"></div></ul>',
+							'sort_column' => 'menu_order',
+						));
+					}
+				?>
 
-<div id="mainContent">
+				<div class="clear"></div>
 
-	<?php 
+			</header><!-- /#header -->
 
-// echo SC_Input::get('test', 'scott');
+			<section class="inner-wrapper">
 
-// echo SC_PageMeta::get_title();
+				<?php 
 
-	//var_dump( get_bloginfo('all') );
+			// echo SC_Input::get('test', 'scott');
 
-var_dump(page_meta::description());
+			// echo SC_PageMeta::get_title();
 
-?>
+				//var_dump( get_bloginfo('all') );
 
-  
+			var_dump(page_meta::description());
+
+			?>

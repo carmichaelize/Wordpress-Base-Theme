@@ -7,7 +7,11 @@ Author URI: http://www.scottcarmichael.co.uk
 Version: 1.0
 */
 
+/* Reset Stylesheet (https://github.com/scottyc1000/carmichaelize.css) */
 @import url("css/carmichaelize.css");
-
-@import url("css/stylesheet.css");
- 
+/* Twitter Bootstrap (http://twitter.github.io/bootstrap/) */
+/*@import url("css/bootstrap.css");*/
+/* Font Awesome (http://fortawesome.github.io/Font-Awesome/) */
+@import url("css/font-awesome.css");
+/* Custom Styling */
+@import url("css/style.css");

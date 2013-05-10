@@ -1,49 +1,30 @@
-/* CARMICHAELIZE.CSS - COMPACT - VERSION 1.1 - https://github.com/scottyc1000/carmichaelize.css - I'LL DECIDE WHAT THE BROWSER RENDERS!!!
+/* CARMICHAELIZE.CSS - VERSION 1.0 - I'LL DECIDE WHAT THE BROWSER RENDERS!!!
 ===============================================================================================================================================
 
-This reset is a collection (and extension) of commonly used methods found in other css resets such as:
+This reset is based on some pretty standard and frequently used techniques found in other resets such as thoughs by Eric Meyer, HTML5 Doctor and Normalize. 
 
-# Eric Meyer - (http://meyerweb.com/eric/tools/css/reset/)
+They have been gutted, mashed and added to by myself to acheive a reset that is in my opinion of greater use to me.
 
-# Normalize - (http://necolas.github.com/normalize.css/)
+Note that pixels are the primary unit of measurement, I am looking at including a comprehensive font normalize/reset in a future version. 
 
-# HTML5 Doctor - (http://html5doctor.com/html-5-reset-stylesheet/)
-
-Techniques have been dropped, mashed, altered and added to by myself to create a more relevant method of showing the browser whose boss.
-
-I have used a 'rounded' method for setting font sizes here, by default the browser is reset to 10px. (http://css-tricks.com/css-font-size/)
-
-I created CARMICHAELIZE.CSS because I'm frustrated with having to extend existing resets with the specifics of the way I work.
-
-This compact version streamlines the process by removing elements that will be styled/reset else where in a project.
-
-Scott Carmichael - http://www.scottcarmichael.co.uk/
+Included also, are some common hooking classes I like to use when styling.
 
 =============================================================================================================================================*/
-
 
 /* Main Element Reset
 =========================================================================================================================*/
 
 /* Fixes main reset issues on most tags */
 
-html, body, div, span, article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary, applet, object, iframe, img, audio, canvas, video, dl, dt, dd, ol, ul, li, figure, form, fieldset, legend, label, table, caption, tbody, tfoot, thead, tr, th, td, p, pre, a, abbr, acronym, address, big, small, cite, code, q, blockquote, strike, del, b, strong, i, em, sub, sup,
-h1, h2, h3, h4, h5, h6 {
+html, body, div, span, article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary, applet, object, iframe, img,
+audio, canvas, video, dl, dt, dd, ol, ul, li, figure, form, fieldset, legend, button, label, table, caption, tbody, tfoot,
+thead, tr, th, td, p, pre, a, abbr, acronym, address, big, small, cite, code, q, blockquote, strike, del, b, strong, i, em, sub, sup {
     background: none;
     border: none;
     outline:none;
-    vertical-align: baseline;
-}
-
-html, body, div, article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary, applet, object, iframe, audio, canvas, video, dl, dt, dd, ol, ul, li, figure, form, fieldset, legend, table, caption, tbody, tfoot,thead, tr, th, td,
-p, pre, q, blockquote, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
-}
-
-/* Used mainly for horizon hack (likely to be dropped) */
-html, body {
-    min-height:100%;
+    vertical-align: baseline;
 }
 
 /* Prevents iOS text size adjust after orientation change, without disabling user zoom (www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/) */
@@ -51,23 +32,69 @@ html, body {
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
-    font-size:62.5%; /* Reset for multiples of 10px */
 }
 
-/* HTML5 Resets & Fixes
+/* HTML5 Resets & Fixes  
 =========================================================================================================================*/
 
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
     display: block;
 }
 
-/* Text Formatting
+/* Links & Anchors
 =========================================================================================================================*/
 
-pre {
-    white-space: pre;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+a { 
+    color:#000;
+    text-decoration:none;
+    outline:none;
+}
+
+/* Improves readability when focused and also mouse hovered in all browsers (people.opera.com/patrickl/experiments/keyboard/test) */
+
+a:hover, a:active {
+    outline: 0;
+}
+
+/* Heading Tags  
+=========================================================================================================================*/
+
+/* Resets all margin and padding values & Set suitable pixels size hierarchy */
+
+ h1, h2, h3, h4, h5, h6 {
+    margin:0;
+    padding:0;
+ }
+
+h1 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 14px;
+}
+
+h6 {
+    font-size: 14px;
+}
+
+/* Text Formatting   
+=========================================================================================================================*/
+
+p {
+    margin-bottom:15px;
 }
 
 /* Addresses style set to 'bolder' in FF3+, S4/5, Chrome */
@@ -76,16 +103,12 @@ b, strong {
     font-weight: bold;
 }
 
-i, em, cite {
-    font-style: italic;
-}
-
 big {
-     font-size: 1.6em;
+     font-size: 16px;
 }
 
 small {
-    font-size: 1.2em;
+    font-size: 12px;
 }
 
 /* Addresses styling not present in IE7/8/9, S5, Chrome */
@@ -107,29 +130,54 @@ del, strike {
 
 /* Corrects font family set oddly in IE6, S4/5, Chrome (en.wikipedia.org/wiki/User:Davidgothberg/Test59) */
 
-pre, code {
+pre, code, .codeBlock {
     font-family: monospace, serif;
     _font-family: 'courier new', monospace;
 }
 
 /* Improves readability of pre-formatted text in all browsers */
 
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 blockquote {
-    margin:0 30px 15px 30px;
+    margin:13px 30px;
 }
 
 /* Addresses CSS quotes not supported in IE6/7 & Addresses quote property not supported in S4 */
 
-blockquote, q {
+q {
     quotes: none;
-    font-style:italic;
 }
 
-blockquote:before, blockquote:after, q:before, q:after {
+q:before, q:after {
     content: '"';
 }
 
-/* Lists & Organisation
+cite {
+    font-style: italic;
+}
+
+/* For use with resource reference or date suffix etc... */
+
+sub, sup {
+    font-size: 11px;
+    line-height: 0;
+    position: relative;
+}
+
+sup {
+    top: -5px;
+}
+
+sub {
+    bottom: -2px;
+}
+
+/* Lists  & Organisation
 =========================================================================================================================*/
 
 /* Primarily for use in content */
@@ -138,19 +186,63 @@ ul, ol, dl {
     list-style-image: none;
     list-style-position:inside;
     padding-left:30px;
-    margin-bottom:15px;
 }
 
-ul {
-   list-style-type:disc;
+nav ul, nav ol {
+    list-style-type: none;
+    list-style-image: none;
 }
 
-ol {
-   list-style-type:decimal;
+hr {
+    display:block;
+    height:1px;
+    border:none;
+    border-top:1px solid #888;
+    margin:15px 0;
+    padding:0;
 }
 
-/* Form Resets & Fixes
+/* Embedded / Rich Media & Content  
 =========================================================================================================================*/
+
+/* Corrects inline-block display not defined in IE6/7/8/9 & FF3 */
+
+audio, canvas, video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+/* Prevents modern browsers from displaying 'audio' without controls & Remove excess height in iOS5 devices */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/* Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4 (Known issue: no IE6 support) */
+
+[hidden] {
+    display: none;
+}
+
+/* Removes border when inside 'a' element in IE6/7/8/9, FF3 & Improves image quality when scaled in IE7 (code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/) */
+
+img {
+    border: none;
+    -ms-interpolation-mode: bicubic;
+}
+
+/* Corrects overflow displayed oddly in IE9 */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* Form Resets & Fixes 
+=========================================================================================================================*/
+
+/* Corrects margin displayed oddly in IE6/7 */
 
 fieldset {
     border: 1px solid #000;
@@ -164,10 +256,11 @@ legend {
     *margin-left: -7px;
 }
 
-/* Improves appearance and consistency in all browsers. Will affect browser validation and highlighting. */
+/* Corrects font size not being inherited in all browsers & Improves appearance and consistency in all browsers. Will affect browser validation and highlighting. */
  
 button, input, select, textarea {
     font-family: sans-serif;
+    font-size: 100%;
     *vertical-align: middle;
     outline:none;
 }
@@ -178,7 +271,7 @@ button, input {
     line-height: normal;
 }
 
-/* Removes default vertical scrollbar in IE6/7/8/9, Improves readability and alignment in all browsers, Removes the possibility of any needless 'user resizing'*/
+/* Removes default vertical scrollbar in IE6/7/8/9, Improves readability and alignment in all browsers, Remove the possibility of any needless 'user resizing'*/
 
 textarea {
     overflow: auto;
@@ -227,11 +320,11 @@ input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-s
 /* Removes inner padding and border in FF3+ (www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons) */
 
 button::-moz-focus-inner, input::-moz-focus-inner {
-    border: none;
+    border: 0;
     padding: 0;
 }
 
-/* Tables
+/* Tables  
 =========================================================================================================================*/
 
 table {
@@ -239,36 +332,33 @@ table {
     border-spacing: 0;
 }
 
-td {
-    vertical-align:middle;
-}
-
-/* Other
-=========================================================================================================================*/
-
-img {
-    -ms-interpolation-mode: bicubic;
-}
-
-/* Hooking Classes
+/* Hooking Classes  
 =========================================================================================================================*/
 
 .clear {
     clear:both;
 }
 
-.left {
+.alignleft {
     float:left;
 }
 
-.right {
+.alignright {
     float:right;
 }
 
-.show {
+.displayHide {
+    display:none;
+}
+
+.displayShow {
     display:block;
 }
 
-.hide {
-    display:none;
+.invisible {
+    visibility:hidden;
+}
+
+.visible {
+    visibility:visible;
 }

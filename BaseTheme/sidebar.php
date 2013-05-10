@@ -5,5 +5,3 @@
 	<?php endif; ?>
 
 </ul>
-
-<br clear="all" />

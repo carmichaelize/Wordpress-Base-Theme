@@ -356,11 +356,9 @@ class sc_page_template_style {
 
 	//Build 'Defaults' Object
 	public function build_options() {
-
 		return (object)array(
 			'unique_id'=>'sc_page_template_style', //unique prefix
 			'title'=>'Page Template', //title
-			'post_type'=>'product', //post, page, or a custom post type
 			'context'=>'side', //normal, advanced, side
 			'priority'=>'default' //default, core, high, low
 		);
@@ -368,27 +366,27 @@ class sc_page_template_style {
 
 	public function page_template_add() {
 
-		add_meta_box(
-			$this->options->unique_id, // Unique ID
-			esc_html__( $this->options->title, 'example' ), //Title
-			array(&$this, 'page_template_render' ), // Callback (builds html)
-			$this->options->post_type,	// Admin page (or post type)
-			$this->options->context,	// Context
-			$this->options->priority, // Priority
-			$callback_args = null
-		);
+		$types = array('post', 'page');
+
+		foreach($types as $post_type){
+			add_meta_box(
+				$this->options->unique_id, // Unique ID
+				esc_html__( $this->options->title, 'example' ), //Title
+				array(&$this, 'page_template_render' ), // Callback (builds html)
+				$post_type, // Admin page (or post type)
+				$this->options->context, // Context
+				$this->options->priority, // Priority
+				$callback_args = null
+			);
+		}
 
 	}
 
-	public function page_template_render($object, $box){ ?>
+	public function page_template_render($object, $box){
 
-		<?php wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
-
-		//var_dump(get_post_meta($object->ID, $this->options->unique_id, $new_meta_value, true));
+		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
 		$data = get_post_meta($object->ID, $this->options->unique_id, $new_meta_value, true);
-
-		//$data = get_post_meta($object->ID, $this->options->unique_id, true);
 
 		$data = $data[0];
 
@@ -409,15 +407,15 @@ class sc_page_template_style {
 			</select>
 		</p>
 
-<!-- 		<p>
+		<!--<p>
 			<select class="widefat" name="<?php echo $this->options->unique_id.'[template]'; ?>">
 				<option <?php echo $selected1; ?> value="one_column">One Column</option>
 				<option <?php echo $selected2; ?> value="two_column">Two Column</option>
 			</select>
 		</p> -->
 
-
-	<?php }
+		<?php 
+		}
 
 	public function page_template_save($post_id, $post=false){
 
