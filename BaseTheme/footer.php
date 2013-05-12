@@ -21,20 +21,11 @@
 			
 		</div><!-- /.wrapper -->
 
-		<?php wp_footer(); ?>
-
 		<!--[if lt IE 8]>
     		<script src="<?php echo TEMPLATE_PATH; ?>/js/json2.js"></script>
   		<![endif]-->
 
-		<!-- jQuery -->
-		<script src="<?php echo TEMPLATE_PATH; ?>/js/jquery-1.9.1.min.js"></script>
-		<!-- Utilities -->
-		<script src="<?php echo TEMPLATE_PATH; ?>/js/utilities.js"></script>
-		<!-- Bootstrap -->
-		<!--<script src="<?php echo TEMPLATE_PATH; ?>/js/bootstrap.min.js"></script>-->
-		<!-- Custom JS-->
-		<script src="<?php echo TEMPLATE_PATH; ?>/js/script.js"></script>
+		<?php wp_footer(); ?>
 
 	</body>
 </html>

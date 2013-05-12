@@ -1,17 +1,42 @@
 <?php
 
-//Some simple code for our widget-enabled sidebar
-if ( function_exists('register_sidebar') )
-    register_sidebar();
-
-//Add support for Widget Areas
-add_action( 'init', 'register_my_menu' );
-add_action( 'init', 'footer_widgets' );
-
-//Create Primary Navigation
-function register_my_menu() {
-	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
+//Load JS Scripts
+function load_the_scripts(){
+	//Register JS Scripts
+	wp_register_script('modernizr', TEMPLATE_PATH.'/js/modernizr-2.6.2.min.js', false, null, false);
+	wp_register_script('jQuery', TEMPLATE_PATH.'/js/jquery-1.9.1.min.js', false, null, true);
+	wp_register_script('utilities', TEMPLATE_PATH.'/js/utilities.js', false, null, true);
+	wp_register_script('bootstrap', TEMPLATE_PATH.'/js/bootstrap.min.js', false, null, true);
+	wp_register_script('script', TEMPLATE_PATH.'/js/script.js', false, null, true);
+	//Activate JS Scripts
+	wp_enqueue_script('modernizr');
+	wp_enqueue_script('jQuery');
+	wp_enqueue_script('utilities');
+	wp_enqueue_script('bootstrap');
+	wp_enqueue_script('script');
 }
+
+add_action('wp_enqueue_scripts', 'load_the_scripts');
+
+//Add Google Analytics 
+if ( GOOGLE_ANALYTICS_ID ) {
+	function add_google_analytics() {
+		echo "<script>var _gaq=[['_setAccount','".GOOGLE_ANALYTICS_ID."'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>";
+	}
+    add_action('wp_footer', 'add_google_analytics', 20);
+}
+
+//Some simple code for our widget-enabled sidebar
+if( function_exists('register_sidebar') ){
+	register_sidebar();
+}
+    
+//Create Primary Navigation
+function activate_menus() {
+	register_nav_menu( 'navigation-menu', 'Main Menu');
+	//register_nav_menu( 'footer-menu', 'Footer Menu');
+}
+add_action( 'init', 'activate_menus' );
 
 //Create Footer Widgets
 function footer_widgets() {
@@ -26,9 +51,10 @@ function footer_widgets() {
 	) );
 
 }
+add_action( 'init', 'footer_widgets' );
 
 //Code for custom background support
-add_custom_background();
+//add_custom_background();
 
 //Enable post and comments RSS feed links to head
 add_theme_support( 'automatic-feed-links' );
@@ -37,7 +63,7 @@ add_theme_support( 'automatic-feed-links' );
 add_theme_support('post-thumbnails');
 set_post_thumbnail_size(520, 250, true);
 
-//return false;
+return false;
 
 class sc_custom_post_product {
 

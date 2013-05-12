@@ -1,4 +1,6 @@
 <?php
+//Config Options
+define('GOOGLE_ANALYTICS_ID', '123'); // UA-XXXXX-Y
 
 //Globals
 define( 'TEMPLATE_PATH', get_bloginfo('stylesheet_directory') );

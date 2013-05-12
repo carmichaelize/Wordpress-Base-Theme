@@ -29,7 +29,7 @@
 		<link rel="shortcut icon" href="<?php echo TEMPLATE_PATH ?>/images/favicon.ico" />
 
 		<!-- Modenizer includes HTML5 shim, delete as required -->
-	  	<script src="<?php echo TEMPLATE_PATH; ?>/js/modernizr-2.6.2.min.js"></script>
+	  	<!--<script src="<?php echo TEMPLATE_PATH; ?>/js/modernizr-2.6.2.min.js"></script>-->
 
 		<?php
 			if ( is_singular() && get_option( 'thread_comments' ) )
@@ -48,13 +48,13 @@
 				<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
 
 				<?php
-					if( has_nav_menu('primary_menu' )){
-						wp_nav_menu(array(  
+					if( has_nav_menu('navigation-menu')){
+						wp_nav_menu(array(
+							'theme_location' => 'navigation-menu',
 							'container'=> 'nav',
-							'container_class' => 'top-nav',
-							'theme_location' => 'primary-menu',
+							'container_class' => 'top-nav',							
 							'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s<div class="clear"></div></ul>',
-							'sort_column' => 'menu_order',
+							'sort_column' => 'menu_order'
 						));
 					}
 				?>
