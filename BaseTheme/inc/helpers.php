@@ -17,8 +17,6 @@ function dd($value){
 
 }
 
-
-
 /**
  * Savride's environment variables filtering ($_GET, $_POST, etc.) (c) 2008
  * wrapper function

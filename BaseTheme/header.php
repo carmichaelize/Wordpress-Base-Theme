@@ -14,8 +14,10 @@
 		<!-- Enable Responsive Techniques -->
 	  	<!--<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />-->
 
-		<link rel="profile" href="http://gmpg.org/xfn/11" />
+	  	<!-- Favicon -->
+	  	<link rel="shortcut icon" href="<?php echo TEMPLATE_PATH ?>/images/favicon.ico" />
 
+	  	<!-- Stylesheets-->
 		<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 		<!--[if IE 7]>
 	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.min.css" />
@@ -23,20 +25,7 @@
 
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
-
-		<link rel="profile" href="http://gmpg.org/xfn/11" />
-		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-		<link rel="shortcut icon" href="<?php echo TEMPLATE_PATH ?>/images/favicon.ico" />
-
-		<!-- Modenizer includes HTML5 shim, delete as required -->
-	  	<!--<script src="<?php echo TEMPLATE_PATH; ?>/js/modernizr-2.6.2.min.js"></script>-->
-
-		<?php
-			if ( is_singular() && get_option( 'thread_comments' ) )
-				wp_enqueue_script( 'comment-reply' );
-
-			wp_head();
-		?>
+		<?php wp_head(); ?>
 	</head>
 
 	<body>
@@ -64,15 +53,3 @@
 			</header><!-- /#header -->
 
 			<section class="inner-wrapper">
-
-				<?php 
-
-			// echo SC_Input::get('test', 'scott');
-
-			// echo SC_PageMeta::get_title();
-
-				//var_dump( get_bloginfo('all') );
-
-			var_dump(page_meta::description());
-
-			?>

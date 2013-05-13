@@ -9,7 +9,7 @@
 						<ul>
 							<?php dynamic_sidebar( 'footer-widget-area' ); ?>
 						</ul>
-					</div><!-- #first .widget-area -->
+					</div>
 				<?php endif; ?>
 
 				<div class="clear"></div>
