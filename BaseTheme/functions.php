@@ -19,8 +19,8 @@ new sc_theme_settings_page();
 //include_once('inc/classes/template_options.php');
 //new sc_page_template_style();
 
-//include_once('inc/classes/product_post_type.php');
-//new sc_product_post_type();
+// include_once('inc/classes/product_post_type.php');
+// new sc_product_post_type();
 
 //Theme Specific Functions
 include_once('inc/functions.php');
