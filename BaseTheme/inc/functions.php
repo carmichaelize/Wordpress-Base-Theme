@@ -24,8 +24,9 @@ function load_the_scripts(){
 add_action('wp_enqueue_scripts', 'load_the_scripts');
 
 //Add Google Analytics 
-if ( isset($global_options->google_analytics_key) ) {
+if ( isset($global_options->google_analytics_key) && $global_options->google_analytics_key != "" ) {
 	function add_google_analytics() {
+		global $global_options;
 		echo "<script type='text/javascript'>var _gaq=[['_setAccount','".$global_options->google_analytics_key."'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>";
 	}
     add_action('wp_footer', 'add_google_analytics', 20);

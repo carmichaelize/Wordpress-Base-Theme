@@ -49,4 +49,7 @@ function remove_submenus() {
 
 //add_action('admin_menu', 'remove_submenus');
 
+//Hide WP Admin Bar
+add_filter('show_admin_bar', '__return_false');
+
 ?>

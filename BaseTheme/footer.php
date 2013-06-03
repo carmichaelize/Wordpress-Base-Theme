@@ -7,13 +7,13 @@
 				<?php global $global_options; ?>
 				<!-- Social -->
 				<?php if( $global_options->twitter ) : ?>
-					<a href="<?php echo $global_options->twitter; ?>"><img src="<?php echo IMG_PATH.'' ?>" alt="Twitter" title="Twitter" /></a>
+					<a href="<?php echo $global_options->twitter; ?>"><img src="<?php echo IMAGE_PATH.'' ?>" alt="Twitter" title="Twitter" /></a>
 				<?php endif; ?>
 				<?php if( $global_options->facebook ) : ?>
-					<a href="<?php echo $global_options->facebook; ?>"><img src="<?php echo IMG_PATH.'' ?>" alt="Facebook" title="Facebook" /></a>
+					<a href="<?php echo $global_options->facebook; ?>"><img src="<?php echo IMAGE_PATH.'' ?>" alt="Facebook" title="Facebook" /></a>
 				<?php endif; ?>
-				<?php if( $global_options->linkedIn ) : ?>
-					<a href="<?php echo $global_options->linkedIn; ?>"><img src="<?php echo IMG_PATH.'' ?>" alt="LinkedIn" title="LinkedIn" /></a>
+				<?php if( $global_options->linkedin ) : ?>
+					<a href="<?php echo $global_options->linkedin; ?>"><img src="<?php echo IMAGE_PATH.'' ?>" alt="LinkedIn" title="LinkedIn" /></a>
 				<?php endif; ?>
 
 				<?php if ( is_active_sidebar( 'footer-widget-area' ) ) : ?>
@@ -23,6 +23,8 @@
 						</ul>
 					</div>
 				<?php endif; ?>
+
+				<?php echo $global_options->google_analytics_key; ?>
 
 				<div class="clear"></div>
 
