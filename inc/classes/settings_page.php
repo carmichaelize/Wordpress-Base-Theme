@@ -48,7 +48,7 @@ class sc_theme_settings_page {
     	add_settings_section('sc_social_section', 'Social Media Links', array($this, 'validate_inputs'), 'sc-theme-options');
     	add_settings_field('facebook', 'Facebook URL', array($this, 'facebook_input'), 'sc-theme-options', 'sc_social_section');
     	add_settings_field('twitter', 'Twitter URL', array($this, 'twitter_input'), 'sc-theme-options', 'sc_social_section');
-    	add_settings_field('linkedIn', 'LinkedIn URL', array($this, 'linkedin_input'), 'sc-theme-options', 'sc_social_section');
+    	add_settings_field('linkedin', 'LinkedIn URL', array($this, 'linkedin_input'), 'sc-theme-options', 'sc_social_section');
 
     	//Social Media Links
     	add_settings_section('sc_analytics_section', 'Analytics & SEO', array($this, 'validate_inputs'), 'sc-theme-options');
@@ -83,7 +83,7 @@ class sc_theme_settings_page {
 	}
 
 	public function linkedin_input(){
-		echo "<input class='regular-text' type='text' name='sc_theme_options[linkedIn]' value='{$this->options->linkedIn}' />";
+		echo "<input class='regular-text' type='text' name='sc_theme_options[linkedin]' value='{$this->options->linkedin}' />";
 	}
 
 	public function google_analytics_input(){
