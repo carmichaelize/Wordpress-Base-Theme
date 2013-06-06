@@ -27,7 +27,7 @@ function dd($value){
  * @param $_filter Object[optional] regexp for advanced filtering or simple /string/ to deny
  */
 
-class SC_Input {
+class Input {
 
   	public static function get($_option, $_old_option = false, $_filter = false){
   		  $_value = false;
@@ -100,8 +100,6 @@ class SC_Input {
 
 
 }
-
-//strtoupper, strtolower, and ucwords
 
 class Str {
 

@@ -62,6 +62,27 @@ class sc_product_post_type {
 	// 	register_taxonomy( 'location', 'products', $this->post_taxonomy_options() );
 	// }
 
+	public function post_type_menu_image(){ 
+		//Menu Sprite Positions (remeber to change CSS selector below!)
+			//Page -149px -33px, -149px -1px
+			//Speech Buble -29px -33px, -29px -1px
+			//Media -119px -33px, -119px -1px
+			//Users -300px -33px, -300px -1px
+			//Apperance 1px -33px, 1px -1px
+			//Tools -209px -33px, -209px -1px
+			//Settings -239px -33px, -239px -1px ?>
+
+		<style>
+		    #menu-posts-products .wp-menu-image {
+		        background-position: -149px -33px !important;
+		    }
+		    #menu-posts-products:hover .wp-menu-image {
+		        background-position: -149px -1px !important;
+		    }
+		</style>
+	
+	<?php }
+
 	public function __construct(){
 		
 		//Add Post Custom Type
@@ -69,6 +90,9 @@ class sc_product_post_type {
 		
 		//Add Taxonomy to Custom Post type
 		//add_action( 'init', array(&$this, 'post_taxonomy_setup'), 0 );
+
+		//Set Menu Image From Admin Sprite
+		add_action( 'admin_head', array(&$this, 'post_type_menu_image') );
 		
 		//Reset Rewrites
 		//flush_rewrite_rules(false);
