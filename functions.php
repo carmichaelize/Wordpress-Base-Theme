@@ -16,6 +16,9 @@ include_once('inc/wp_helpers.php');
 include_once('inc/classes/settings_page.php');
 new sc_theme_settings_page();
 
+include_once('inc/classes/post_gallery.php');
+new sc_page_slider_images();
+
 //include_once('inc/classes/template_options.php');
 //new sc_page_template_style();
 
