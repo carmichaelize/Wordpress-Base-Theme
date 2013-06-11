@@ -37,7 +37,6 @@ class sc_page_slider_images {
 
                 wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
-
                 global $post;
 
                 $image_src = '';
@@ -51,59 +50,86 @@ class sc_page_slider_images {
         ?>
 
         <style>
-
+            #temp_image {
+                display: none;
+            }
             ul.<?php echo $this->options->unique_id; ?>_container{
 
             }
-
-            ul.<?php echo $this->options->unique_id; ?>_container li{
+            ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item{
                 float:left;
                 width:200px;
+                height:260px;
+                margin-right:15px;
+                margin-bottom:15px;
+                background: #DFDFDF;
+                padding:5px;
+                border-radius: 3px;
+                cursor:pointer;
+                border:1px solid #ccc;
+
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
+
+
+            }
+            ul.<?php echo $this->options->unique_id; ?>_container li img{
+                max-width: 100%
             }
 
+            ul.<?php echo $this->options->unique_id; ?>_container li.clear {
+                clear:both;
+                display: block;
+                float: none;
+            }
         </style>
-
-        <?php if(isset($images) && is_array($images) ): ?>
-
-            <ul class="<?php echo $this->options->unique_id; ?>_container">         
-
-            <?php foreach($images as $image): ?>
-
-                <?php if($image): ?>
-
-                    <li class="<?php echo $this->options->unique_id; ?>_item">
-                    
-                        <!-- <div class="<?php echo $this->options->unique_id; ?>_item"> -->
-                            <img id="book_image" src="<?php echo wp_get_attachment_url( $image ) ?>" style="max-width:300px;" />
-                            <input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" class="upload_image_id" value="<?php echo $image; ?>" />
-                            <p>
-                                <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
-                                <a title="Remove Slider Image" href="#" class="remove-book-image" style="<?php echo ( ! $image ? 'display:none;' : '' ); ?>">Remove Slider Image</a>
-                            </p>
-                        <!-- </div> -->
-
-                    </li>
-
-                <?php endif; ?>
-
-            <?php endforeach; ?>
-
-            <li style="clear:both;"></li>
-
-            </ul>
-
-        <?php endif; ?>
 
         <span class="add_new_slide button button-primary button-large">Add New Slide</span>
 
+        <ul class="<?php echo $this->options->unique_id; ?>_container"> 
+        <?php if(isset($images) && is_array($images) ): ?>
+
+                <?php foreach($images as $image): ?>
+
+                    <?php if($image): ?>
+
+                        <li class="<?php echo $this->options->unique_id; ?>_item">
+                        
+                            <!-- <div class="<?php echo $this->options->unique_id; ?>_item"> -->
+                                <img id="book_image" src="<?php echo wp_get_attachment_url( $image ) ?>" />
+                                <input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" class="upload_image_id" value="<?php echo $image; ?>" />
+                                <p>
+                                    <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
+                                    <a title="Remove Slider Image" href="#" class="remove-book-image" style="<?php echo ( ! $image ? 'display:none;' : '' ); ?>">Remove Slider Image</a>
+                                </p>
+                            <!-- </div> -->
+
+                        </li>
+
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+
+                <li class="clear"></li>
+
+        <?php endif; ?>
+
+        </ul>
+
         <li class="new_image" style="display:none;">
 
-                <img id="book_image" src="" style="max-width:300px;" />
-                <input type="hidden" name="" class="upload_image_id" value="" />
-                <p>
-                    <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
-                    <a title="Remove Slider Image" href="#" class="remove-book-image" style="display:none;">Remove Slider Image</a>
-                </p>
+            <img id="book_image" src="" style="max-width:300px;" />
+            <input type="hidden" name="" class="upload_image_id" value="" />
+            <p>
+                <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
+                <a title="Remove Slider Image" href="#" class="remove-book-image" style="display:none;">Remove Slider Image</a>
+            </p>
 
         </li>
                 
@@ -167,15 +193,18 @@ class sc_page_slider_images {
 
                             console.log($('.<?php echo $this->options->unique_id; ?>_container').children('li').eq(-2).find('input.upload_image_id').val());
 
-                                //.find('input.upload_image_id').val());
-                            if( itemContainer.eq(-1).find('input').val() ){
+                            //.find('input.upload_image_id').val());
+                            //if( itemContainer.eq(-1).find('input').val() ){
                                 var new_image = $('li.new_image').clone();
                                 new_image.find('input.upload_image_id').attr({
                                     'name': '<?php echo $this->options->unique_id; ?>[]'
                                 });
                                 itemContainer.append(new_image.show().attr('class', '<?php echo $this->options->unique_id; ?>_item'));
-                            }   
+                            //}   
                         });
+
+                        //jQuery Sortable / Change Image Order
+                        $("ul.<?php echo $this->options->unique_id; ?>_container" ).sortable({ appendTo: document.body });
         
                 });
                 </script>
