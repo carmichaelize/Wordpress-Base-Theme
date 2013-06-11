@@ -23,9 +23,10 @@ class sc_product_post_type {
 			'public' => true,
 			'menu_position' => 5,
 			//'menu_icon' => admin_url().'images/media-button-video.gif',
-			'supports' => array( 'title', 'editor', 'thumbnail' ), // title, editor, thumbnail, excerpt, comments
+			'supports' => array( 'title', 'editor', 'thumbnail' ), // title, editor, thumbnail, excerpt, comments, page-attributes
 			'has_archive'   => true,
-			'rewrite' => array( 'slug' => 'products', 'with_front' => true )
+			'rewrite' => array( 'slug' => 'products', 'with_front' => true ),
+			//'hierarchical' => true
 		);
 	}
 
