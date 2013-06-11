@@ -56,28 +56,28 @@ class sc_page_slider_images {
             ul.<?php echo $this->options->unique_id; ?>_container{
 
             }
-            ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item{
+            ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item {
+                text-align: center;
                 float:left;
                 width:200px;
-                height:260px;
+                width:20%;
+                height:200px;
                 margin-right:15px;
                 margin-bottom:15px;
+                margin:0 1.7% 1.7% 1.7%;
                 background: #DFDFDF;
                 padding:5px;
                 border-radius: 3px;
-                cursor:pointer;
+                cursor:move;
                 border:1px solid #ccc;
-
-background: #ffffff; /* Old browsers */
-background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
-
-
+                background: #ffffff; /* Old browsers */
+                background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
+                background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
             }
             ul.<?php echo $this->options->unique_id; ?>_container li img{
                 max-width: 100%
@@ -124,7 +124,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
         <li class="new_image" style="display:none;">
 
-            <img id="book_image" src="" style="max-width:300px;" />
+            <img id="book_image" src="" />
             <input type="hidden" name="" class="upload_image_id" value="" />
             <p>
                 <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
@@ -155,7 +155,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                             var container = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
                             //container.find('.upload_image_id').val('');
                             //container.find('img').attr('src', '');
-                            container.remove();
+                            container.fadeOut(600, function(){
+                                container.remove();
+                            });
                             return false;
                         });
                         
@@ -199,7 +201,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                                 new_image.find('input.upload_image_id').attr({
                                     'name': '<?php echo $this->options->unique_id; ?>[]'
                                 });
-                                itemContainer.append(new_image.show().attr('class', '<?php echo $this->options->unique_id; ?>_item'));
+                                itemContainer.children('li.clear').remove();
+                                itemContainer.append(new_image.show().attr('class', '<?php echo $this->options->unique_id; ?>_item')).append('<li class="clear"></li>');
                             //}   
                         });
 
