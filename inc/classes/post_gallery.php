@@ -17,7 +17,7 @@ class sc_page_slider_images {
 
         public function page_template_add() {
 
-                $types = array('post');
+                $types = array('page');
 
                 foreach($types as $post_type){
                         add_meta_box(
@@ -35,6 +35,8 @@ class sc_page_slider_images {
 
         public function page_template_render($object, $box){
 
+                
+
                 wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
                 global $post;
@@ -45,52 +47,18 @@ class sc_page_slider_images {
 
                 //$image_src = wp_get_attachment_url( $image_id );
 
-                var_dump($images);
+                //var_dump($images);
+
+                //Load CSS
+                add_action('admin_footer', array(&$this, 'load_css'), 998);
+                //Load JS
+                add_action('admin_footer', array(&$this, 'load_js'), 999);
 
         ?>
 
-        <style>
-            #temp_image {
-                display: none;
-            }
-            ul.<?php echo $this->options->unique_id; ?>_container{
-
-            }
-            ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item {
-                text-align: center;
-                float:left;
-                width:200px;
-                width:20%;
-                height:200px;
-                margin-right:15px;
-                margin-bottom:15px;
-                margin:0 1.7% 1.7% 1.7%;
-                background: #DFDFDF;
-                padding:5px;
-                border-radius: 3px;
-                cursor:move;
-                border:1px solid #ccc;
-                background: #ffffff; /* Old browsers */
-                background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
-                background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
-            }
-            ul.<?php echo $this->options->unique_id; ?>_container li img{
-                max-width: 100%
-            }
-
-            ul.<?php echo $this->options->unique_id; ?>_container li.clear {
-                clear:both;
-                display: block;
-                float: none;
-            }
-        </style>
-
         <span class="add_new_slide button button-primary button-large">Add New Slide</span>
+
+        <div class="clear"></div>
 
         <ul class="<?php echo $this->options->unique_id; ?>_container"> 
         <?php if(isset($images) && is_array($images) ): ?>
@@ -99,16 +67,28 @@ class sc_page_slider_images {
 
                     <?php if($image): ?>
 
+                    <?php
+
+                        //$image = wp_get_attachment_url( $image );
+
+                        //$image_url = str_replace('.jpg', '-300x300.jpg', $image);
+
+                        //$image_url = wp_get_attachment_image_src( $image, 'thumbnail' );
+
+                        //var_dump($image_url)
+
+                    ?>
+
                         <li class="<?php echo $this->options->unique_id; ?>_item">
-                        
-                            <!-- <div class="<?php echo $this->options->unique_id; ?>_item"> -->
-                                <img id="book_image" src="<?php echo wp_get_attachment_url( $image ) ?>" />
-                                <input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" class="upload_image_id" value="<?php echo $image; ?>" />
-                                <p>
-                                    <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
-                                    <a title="Remove Slider Image" href="#" class="remove-book-image" style="<?php echo ( ! $image ? 'display:none;' : '' ); ?>">Remove Slider Image</a>
-                                </p>
-                            <!-- </div> -->
+                            
+                            <div class="image-mask" style="background-image:url('<?php echo wp_get_attachment_url( $image ) ?>');">
+                                <!-- <img id="image" src="<?php echo wp_get_attachment_url( $image ) ?>" /> -->
+                            </div>
+                            <input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" class="upload_image_id" value="<?php echo $image; ?>" />
+                            <p>
+                                <a title="Set Slider Image" href="#" class="set-image">Set Image</a>
+                                <a title="Remove Slider Image" href="#" class="remove-image">Remove Image</a>
+                            </p>
 
                         </li>
 
@@ -122,19 +102,28 @@ class sc_page_slider_images {
 
         </ul>
 
+        <!-- template -->
         <li class="new_image" style="display:none;">
-
-            <img id="book_image" src="" />
+            <div class="image-mask">
+                <!-- <img id="image" src="" /> -->
+            </div>
             <input type="hidden" name="" class="upload_image_id" value="" />
             <p>
-                <a title="Set Slider Image" href="#" class="set-book-image">Set Slider Image</a>
-                <a title="Remove Slider Image" href="#" class="remove-book-image" style="display:none;">Remove Slider Image</a>
+                <a title="Set Slider Image" href="#" class="set-image">Set Image</a>
+                <a title="Remove Slider Image" href="#" class="remove-image" style="display:none;">Remove Image</a>
             </p>
-
         </li>
-                
-                <script type="text/javascript">
+        <!-- /template -->
+
+        <?php }
+
+        public function load_js(){ ?>
+
+            <script type="text/javascript">
+
                 jQuery(document).ready(function($) {
+
+                        console.log('this is being loaded here OK!!!!!!');
                         
                         // save the send_to_editor handler function
                         window.send_to_editor_default = window.send_to_editor;
@@ -143,7 +132,7 @@ class sc_page_slider_images {
                         var currentItem = null,
                             itemContainer = $('.<?php echo $this->options->unique_id; ?>_container');
 
-                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.set-book-image', function(){
+                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.set-image', function(){
                             currentItem = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
                             // replace the default send_to_editor handler function with our own
                             window.send_to_editor = window.attach_image;
@@ -151,7 +140,7 @@ class sc_page_slider_images {
                             return false;
                         });
 
-                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.remove-book-image', function(){
+                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.remove-image', function(){
                             var container = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
                             //container.find('.upload_image_id').val('');
                             //container.find('img').attr('src', '');
@@ -169,18 +158,23 @@ class sc_page_slider_images {
                             console.log(currentItem);
                                 
                             // turn the returned image html into a hidden image element so we can easily pull the relevant attributes we need
-                            $('body').append('<div id="temp_image">' + html + '</div>');
-                                    
+                            if( $('#temp_image').length > 0 ){
+                                $('#temp_image').html(html);
+                            } else {
+                                $('body').append('<div id="temp_image">' + html + '</div>');
+                            }
+
                             var img = $('#temp_image').find('img');
                             
                             imgurl   = img.attr('src');
                             imgclass = img.attr('class');
                             imgid    = parseInt(imgclass.replace(/\D/g, ''), 10);
-    
+                            
                             currentItem.find('.upload_image_id').val(imgid);
-                            currentItem.find('.remove-book-image').show();
+                            currentItem.find('.remove-image').show();
     
-                            currentItem.find('img#book_image').attr('src', imgurl);
+                            //currentItem.find('img').attr('src', imgurl);
+                            currentItem.find('.image-mask').attr('style','background-image: url("'+imgurl+'");'); 
                             try{tb_remove();}catch(e){};
                             currentItem.find('#temp_image').remove();
                             
@@ -190,27 +184,92 @@ class sc_page_slider_images {
                         }
 
                         //Add New Image
-                        //$('.add_new_slide').on('click', function(){
                         $('div#<?php echo $this->options->unique_id; ?>').on('click', '.add_new_slide', function(){
 
-                            console.log($('.<?php echo $this->options->unique_id; ?>_container').children('li').eq(-2).find('input.upload_image_id').val());
+                            var previousSet = itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').eq(-1).find('input.upload_image_id').val();
 
-                            //.find('input.upload_image_id').val());
-                            //if( itemContainer.eq(-1).find('input').val() ){
+                            if( previousSet ){
                                 var new_image = $('li.new_image').clone();
                                 new_image.find('input.upload_image_id').attr({
                                     'name': '<?php echo $this->options->unique_id; ?>[]'
                                 });
                                 itemContainer.children('li.clear').remove();
                                 itemContainer.append(new_image.show().attr('class', '<?php echo $this->options->unique_id; ?>_item')).append('<li class="clear"></li>');
-                            //}   
+                            } else {
+                                alert('Please Select An Image');
+                            }
                         });
 
                         //jQuery Sortable / Change Image Order
                         $("ul.<?php echo $this->options->unique_id; ?>_container" ).sortable({ appendTo: document.body });
         
                 });
-                </script>
+            </script>
+
+        <?php }
+
+        public function load_css(){ ?>
+
+            <style>
+                #temp_image {
+                    display: none;
+                }
+
+                #<?php echo $this->options->unique_id; ?> .inside{
+                    margin:10px 0;
+                    padding:0;
+                }
+
+                #<?php echo $this->options->unique_id; ?> .inside span.add_new_slide{
+                    margin:0 0 0 10px;
+                }
+
+                ul.<?php echo $this->options->unique_id; ?>_container{
+
+                }
+                ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item {
+                    text-align: center;
+                    float:left;
+                   /* width:200px;*/
+                    width:15%;
+                    height:200px;
+/*                    margin-right:15px;
+                    margin-bottom:15px;*/
+                    margin:0 1.4% 2.8% 1.4%;
+                    background: #DFDFDF;
+                   /* padding:5px;*/
+                    padding:1%;
+                    border-radius: 3px;
+                    cursor:move;
+                    border:1px solid #ccc;
+                    background: #ffffff; /* Old browsers */
+                    background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
+                    background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
+                    background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
+                    background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
+                    background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
+                }
+                ul.<?php echo $this->options->unique_id; ?>_container li.clear {
+                    clear:both;
+                    display: block;
+                    float: none;
+                }
+                ul.<?php echo $this->options->unique_id; ?>_container li .image-mask{
+                    width:99%;
+                    height:140px;
+                    overflow: hidden;
+                    border-radius: 3px;
+                    border:1px solid #ccc;
+                    background-position: center center;
+                    background-size: cover;
+                    /*background-size:auto;*/
+                }
+                ul.<?php echo $this->options->unique_id; ?>_container li img{
+                    max-width: 100%
+                }
+            </style>
 
         <?php }
 
@@ -280,10 +339,10 @@ class sc_page_slider_images {
 
         public function __construct(){
 
-                //Create 'Options' Object
-                $this->options = $this->build_options();
+            //Create 'Options' Object
+            $this->options = $this->build_options();
 
-                add_action( 'init', array(&$this, 'page_template_setup'));
+            add_action( 'init', array(&$this, 'page_template_setup'));
 
         }
 }
