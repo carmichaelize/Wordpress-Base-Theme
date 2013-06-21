@@ -188,7 +188,7 @@ class sc_page_slider_images {
 
                             var previousSet = itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').eq(-1).find('input.upload_image_id').val();
 
-                            if( previousSet ){
+                            if( itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').length == 0 || previousSet ){
                                 var new_image = $('li.new_image').clone();
                                 new_image.find('input.upload_image_id').attr({
                                     'name': '<?php echo $this->options->unique_id; ?>[]'
@@ -215,16 +215,16 @@ class sc_page_slider_images {
                     display: none;
                 }
 
-                #<?php echo $this->options->unique_id; ?> .inside{
+                #<?php echo $this->options->unique_id; ?> .inside {
                     margin:10px 0;
                     padding:0;
                 }
 
-                #<?php echo $this->options->unique_id; ?> .inside span.add_new_slide{
+                #<?php echo $this->options->unique_id; ?> .inside span.add_new_slide {
                     margin:0 0 0 10px;
                 }
 
-                ul.<?php echo $this->options->unique_id; ?>_container{
+                ul.<?php echo $this->options->unique_id; ?>_container {
 
                 }
                 ul.<?php echo $this->options->unique_id; ?>_container li.<?php echo $this->options->unique_id; ?>_item {

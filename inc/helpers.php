@@ -9,12 +9,10 @@
 */
 
 function dd($value){
-	
 	echo '<pre>';
 	var_dump($value);
 	echo '</pre>';
 	die();
-
 }
 
 /**
@@ -257,18 +255,99 @@ class Str {
 
 }
 
-//Date Format Functions
-// public function format_date($date){
-// 	return date_format(date_create($date), "d/m/Y");
-// }
-// public function format_date_text($date){
-// 	return date_format(date_create($date), "jS F Y");
-// }
+class Output {
 
-//Merge Array/Object into Object
-// public function object_merge($initial_data, $extra_data){
-// 	return (object) array_merge((array) $initial_data, (array) $extra_data);
-// }
+	/**
+	* Determine if Number id Odd/Even
+	*
+	* @param  number  $count
+	* @return string
+	*
+	*/
+
+	public function odd_even($count = 1){
+		if($count % 2 == 0){
+			return "even";
+		}
+		return "odd";
+	}
+
+	/**
+	* Merge Two Arrays/Objects into a Single Object.
+	*
+	* @param  array/object  $initial_data
+	* @param  array/object  $extra_data
+	* @return object
+	*
+	*/
+
+	public function object_merge($initial_data, $extra_data){
+ 		return (object) array_merge((array) $initial_data, (array) $extra_data);
+	}
+
+	/**
+	* Add Span To Specified Letter.
+	*
+	* @param  string  $string
+	* @param  string  $class_name
+	* @param  array   $words
+	* @return string
+	*
+	*/
+
+	public function drop_letter($string, $class_name = '', $words = array(0)){
+		$word_array = str_split($string);
+		$new_word = '';
+		for($i=0;$i<count($word_array);$i++){
+			if(in_array($i, $words)){
+				$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span>';
+			} else {
+				$new_word .= $word_array[$i];
+			}
+		}
+		return $new_word;
+	}
+
+	/**
+	* Add Span To Specified Word.
+	*
+	* @param  string  $string
+	* @param  string  $class_name
+	* @param  array   $words
+	* @return string
+	*
+	*/
+
+	public function drop_word($string, $class_name = '', $words = array(0)){
+		$word_array = explode(' ', $string);
+		$new_word = '';
+		for($i=0;$i<count($word_array);$i++){
+			if(in_array($i, $words)){
+				$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span> ';
+			} else {
+				$new_word .= $word_array[$i].' ';
+			}
+		}
+		return $new_word;
+	}
+
+	/**
+	* Create or Format a Date
+	*
+	* @param  string/int  $date (e.g. "2012-05-18 15:28:21" OR 1333699439)
+	* @param  string  	  $format
+	* @return string
+	*
+	*/
+
+	public function date_format($date = '', $format = "d/m/Y"){
+		if( is_int($date) ){
+			return date( $format, $date );
+		}
+		return date_format( date_create($date), $format ); 		
+	}
+
+}
 
 
 ?>

@@ -36,4 +36,11 @@ add_action('init', function(){
 	//flush_rewrite_rules(false);
 });
 
+
+//Migration SQL
+//UPDATE wp_options SET option_value = replace(option_value, 'http://mcnabs.dev', 'mcnabs.flintriverdev3.co.uk') WHERE option_name = 'home' OR option_name = 'siteurl';
+//UPDATE wp_posts SET guid = REPLACE (guid, 'http://mcnabs.devm', 'mcnabs.flintriverdev3.co.uk');
+//UPDATE wp_posts SET post_content = REPLACE (post_content, 'mcnabs.flintriverdev3.co.uk');
+//UPDATE wp_postmeta SET meta_value = REPLACE (meta_value, 'http://mcnabs.dev','mcnabs.flintriverdev3.co.uk');
+
 ?>
