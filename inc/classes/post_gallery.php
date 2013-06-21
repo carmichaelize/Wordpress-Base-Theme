@@ -11,48 +11,45 @@ class sc_page_slider_images {
                         'unique_id'=>'sc_page_slider_images', //unique prefix
                         'title'=>'Slider Images', //title
                         'context'=>'normal', //normal, advanced, side
-                        'priority'=>'high' //default, core, high, low
+                        'priority'=>'high', //default, core, high, low
+                        'post_types' => array('post', 'page')
                 );
         }
 
         public function page_template_add() {
 
-                $types = array('page');
-
-                foreach($types as $post_type){
-                        add_meta_box(
-                                $this->options->unique_id, // Unique ID
-                                esc_html__( $this->options->title, 'example' ), //Title
-                                array(&$this, 'page_template_render' ), // Callback (builds html)
-                                $post_type, // Admin page (or post type)
-                                $this->options->context, // Context
-                                $this->options->priority, // Priority
-                                $callback_args = null
-                        );
-                }
+            foreach($this->options->post_types as $post_type){
+                    add_meta_box(
+                            $this->options->unique_id, // Unique ID
+                            esc_html__( $this->options->title, 'example' ), //Title
+                            array(&$this, 'page_template_render' ), // Callback (builds html)
+                            $post_type, // Admin page (or post type)
+                            $this->options->context, // Context
+                            $this->options->priority, // Priority
+                            $callback_args = null
+                    );
+            }
 
         }
 
         public function page_template_render($object, $box){
 
-                
+            wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
-                wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
+            global $post;
 
-                global $post;
+            $image_src = '';
 
-                $image_src = '';
+            $images = get_post_meta( $post->ID, $this->options->unique_id, true );
 
-                $images = get_post_meta( $post->ID, $this->options->unique_id, true );
+            //$image_src = wp_get_attachment_url( $image_id );
 
-                //$image_src = wp_get_attachment_url( $image_id );
+            //var_dump($images);
 
-                //var_dump($images);
-
-                //Load CSS
-                add_action('admin_footer', array(&$this, 'load_css'), 998);
-                //Load JS
-                add_action('admin_footer', array(&$this, 'load_js'), 999);
+            //Load CSS
+            add_action('admin_footer', array(&$this, 'load_css'), 998);
+            //Load JS
+            add_action('admin_footer', array(&$this, 'load_js'), 999);
 
         ?>
 
@@ -121,73 +118,98 @@ class sc_page_slider_images {
 
             <script type="text/javascript">
 
-                jQuery(document).ready(function($) {
+                jQuery(document).ready(function($){
 
-                        console.log('this is being loaded here OK!!!!!!');
+                    console.log('this is being loaded here OK!!!!!!');
+                    
+                    // save the send_to_editor handler function
+                    window.send_to_editor_default = window.send_to_editor;
+
+                    // handler function which is invoked after the user selects an image from the gallery popup.
+                    // this function displays the image and sets the id so it can be persisted to the post meta
+                    window.attach_image = function(html) {
+                            
+                        // turn the returned image html into a hidden image element so we can easily pull the relevant attributes we need
+                        if( $('#temp_image').length > 0 ){
+                            $('#temp_image').html(html);
+                        } else {
+                            $('body').append('<div id="temp_image">' + html + '</div>');
+                        }
+
+                        var img = $('#temp_image').find('img');
                         
-                        // save the send_to_editor handler function
-                        window.send_to_editor_default = window.send_to_editor;
+                        imgurl   = img.attr('src');
+                        imgclass = img.attr('class');
+                        imgid    = parseInt(imgclass.replace(/\D/g, ''), 10);
+                        
+                        currentItem.find('.upload_image_id').val(imgid);
+                        currentItem.find('.remove-image').show();
 
-                        //Image Container being created/updated.
-                        var currentItem = null,
-                            itemContainer = $('.<?php echo $this->options->unique_id; ?>_container');
+                        //currentItem.find('img').attr('src', imgurl);
+                        currentItem.find('.image-mask').attr('style','background-image: url("'+imgurl+'");'); 
+                        try{tb_remove();}catch(e){};
+                        currentItem.find('#temp_image').remove();
+                        
+                        // restore the send_to_editor handler function
+                        window.send_to_editor = window.send_to_editor_default;
+                            
+                    }
 
-                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.set-image', function(){
-                            currentItem = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
+                    var currentItem = null,
+                        itemContainer = $('ul.<?php echo $this->options->unique_id; ?>_container'),
+                        itemName = 'li.<?php echo $this->options->unique_id; ?>_item';
+
+                    //Set/Change Image After DOM Creation
+                    itemContainer.on('click', '.set-image', function(){
+                        currentItem = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
+                        // replace the default send_to_editor handler function with our own
+                        window.send_to_editor = window.attach_image;
+                        tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
+                        return false;
+                    });
+
+                    //Remove Image From Container/DOM
+                    itemContainer.on('click', '.remove-image', function(){
+                        var container = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
+                        //container.find('.upload_image_id').val('');
+                        //container.find('img').attr('src', '');
+                        container.fadeOut(600, function(){
+                            container.remove();
+                        });
+                        return false;
+                    });
+                        
+
+                    //Add New Image
+                    $('div#<?php echo $this->options->unique_id; ?>').on('click', '.add_new_slide', function(){
+
+                        var imageList = itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item'),
+                            previousSet = true;
+
+                        //Check No Empty Container Are Listed
+                        imageList.each(function(){
+                            if( !$(this).children('.image-mask').attr('style') ){
+                                previousSet = false;
+                            }
+                        });
+
+                        if( imageList.length == 0 || previousSet ){
+                            
+                            var newImage = $('li.new_image').clone();
+                            newImage.find('input.upload_image_id').attr({
+                                'name': '<?php echo $this->options->unique_id; ?>[]'
+                            });
+
+                            currentItem = newImage;
+                            itemContainer.children('li.clear').remove();
+                            itemContainer.append(newImage.show().attr('class', '<?php echo $this->options->unique_id; ?>_item')).append('<li class="clear"></li>');
+
                             // replace the default send_to_editor handler function with our own
                             window.send_to_editor = window.attach_image;
                             tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
                             return false;
-                        });
 
-                        $('ul.<?php echo $this->options->unique_id; ?>_container').on('click', '.remove-image', function(){
-                            var container = $(this).closest('li.<?php echo $this->options->unique_id; ?>_item');
-                            //container.find('.upload_image_id').val('');
-                            //container.find('img').attr('src', '');
-                            container.fadeOut(600, function(){
-                                container.remove();
-                            });
-                            return false;
-                        });
-                        
-                        // handler function which is invoked after the user selects an image from the gallery popup.
-                        // this function displays the image and sets the id so it can be persisted to the post meta
-                        window.attach_image = function(html) {
-
-                            //console.log(html);
-                            console.log(currentItem);
-                                
-                            // turn the returned image html into a hidden image element so we can easily pull the relevant attributes we need
-                            if( $('#temp_image').length > 0 ){
-                                $('#temp_image').html(html);
-                            } else {
-                                $('body').append('<div id="temp_image">' + html + '</div>');
-                            }
-
-                            var img = $('#temp_image').find('img');
-                            
-                            imgurl   = img.attr('src');
-                            imgclass = img.attr('class');
-                            imgid    = parseInt(imgclass.replace(/\D/g, ''), 10);
-                            
-                            currentItem.find('.upload_image_id').val(imgid);
-                            currentItem.find('.remove-image').show();
-    
-                            //currentItem.find('img').attr('src', imgurl);
-                            currentItem.find('.image-mask').attr('style','background-image: url("'+imgurl+'");'); 
-                            try{tb_remove();}catch(e){};
-                            currentItem.find('#temp_image').remove();
-                            
-                            // restore the send_to_editor handler function
-                            window.send_to_editor = window.send_to_editor_default;
-                                
-                        }
-
-                        //Add New Image
-                        $('div#<?php echo $this->options->unique_id; ?>').on('click', '.add_new_slide', function(){
-
-                            var previousSet = itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').eq(-1).find('input.upload_image_id').val();
-
+<<<<<<< HEAD
                             if( itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').length == 0 || previousSet ){
                                 var new_image = $('li.new_image').clone();
                                 new_image.find('input.upload_image_id').attr({
@@ -199,9 +221,15 @@ class sc_page_slider_images {
                                 alert('Please Select An Image');
                             }
                         });
+=======
+                        } else {
+                            alert('Please Select An Image');
+                        }
+                    });
+>>>>>>> 79e2284306da9958c09ec6c056b0b32f436bfe3d
 
-                        //jQuery Sortable / Change Image Order
-                        $("ul.<?php echo $this->options->unique_id; ?>_container" ).sortable({ appendTo: document.body });
+                    //jQuery Sortable / Change Image Order
+                    itemContainer.sortable({ appendTo: document.body });
         
                 });
             </script>
