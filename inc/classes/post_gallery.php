@@ -209,24 +209,10 @@ class sc_page_slider_images {
                             tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
                             return false;
 
-<<<<<<< HEAD
-                            if( itemContainer.children('li.<?php echo $this->options->unique_id; ?>_item').length == 0 || previousSet ){
-                                var new_image = $('li.new_image').clone();
-                                new_image.find('input.upload_image_id').attr({
-                                    'name': '<?php echo $this->options->unique_id; ?>[]'
-                                });
-                                itemContainer.children('li.clear').remove();
-                                itemContainer.append(new_image.show().attr('class', '<?php echo $this->options->unique_id; ?>_item')).append('<li class="clear"></li>');
-                            } else {
-                                alert('Please Select An Image');
-                            }
-                        });
-=======
                         } else {
                             alert('Please Select An Image');
                         }
                     });
->>>>>>> 79e2284306da9958c09ec6c056b0b32f436bfe3d
 
                     //jQuery Sortable / Change Image Order
                     itemContainer.sortable({ appendTo: document.body });
