@@ -9,21 +9,20 @@ class sc_page_template_style {
 	public function build_options() {
 		return (object)array(
 			'unique_id'=>'sc_page_template_style', //unique prefix
+			'post_types' => array('post', 'page'), //post types
 			'title'=>'Page Template', //title
 			'context'=>'side', //normal, advanced, side
 			'priority'=>'default' //default, core, high, low
 		);
 	}
 
-	public function page_template_add() {
+	public function custom_meta_add() {
 
-		$types = array('post', 'page');
-
-		foreach($types as $post_type){
+		foreach($this->options->post_types as $post_type){
 			add_meta_box(
 				$this->options->unique_id, // Unique ID
 				esc_html__( $this->options->title, 'example' ), //Title
-				array(&$this, 'page_template_render' ), // Callback (builds html)
+				array(&$this, 'custom_meta_render' ), // Callback (builds html)
 				$post_type, // Admin page (or post type)
 				$this->options->context, // Context
 				$this->options->priority, // Priority
@@ -33,7 +32,7 @@ class sc_page_template_style {
 
 	}
 
-	public function page_template_render($object, $box){
+	public function custom_meta_render($object, $box){
 
 		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
@@ -41,34 +40,19 @@ class sc_page_template_style {
 
 		$data = $data[0];
 
-		$selected1 = '';
-		$selected2 = '';
-		if($data == 'one_column'){
-			$selected1 = 'selected';
-		} elseif($data == 'two_column'){
-			$selected2 = 'selected';
-		}
-
 		?>
 
 		<p>
 			<select class="widefat" name="<?php echo $this->options->unique_id; ?>">
-				<option <?php echo $selected1; ?> value="one_column">One Column</option>
-				<option <?php echo $selected2; ?> value="two_column">Two Column</option>
+				<option <?php echo $data == 'one_column' ? 'selected' : '' ; ?> value="one_column">One Column</option>
+				<option <?php echo $data == 'two_column' ? 'selected' : '' ; ?> value="two_column">Two Column</option>
 			</select>
 		</p>
 
-		<!--<p>
-			<select class="widefat" name="<?php echo $this->options->unique_id.'[template]'; ?>">
-				<option <?php echo $selected1; ?> value="one_column">One Column</option>
-				<option <?php echo $selected2; ?> value="two_column">Two Column</option>
-			</select>
-		</p> -->
-
 		<?php 
-		}
+	}
 
-	public function page_template_save($post_id, $post=false){
+	public function custom_meta_save($post_id, $post=false){
 
 		/* Verify the nonce before proceeding. */
 		if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
@@ -108,13 +92,13 @@ class sc_page_template_style {
 
 	}
 
-	public function page_template_setup() {
+	public function custom_meta_setup() {
 
 		//Add Box
-		add_action( 'add_meta_boxes', array(&$this, 'page_template_add' ));
+		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 
 		/* Save Box */
-		add_action( 'save_post', array(&$this, 'page_template_save'));
+		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		
 	}
 
@@ -123,7 +107,7 @@ class sc_page_template_style {
 		//Create 'Options' Object
 		$this->options = $this->build_options();
 
-		add_action( 'init', array(&$this, 'page_template_setup'));
+		add_action( 'init', array(&$this, 'custom_meta_setup'));
 
 	}
 }

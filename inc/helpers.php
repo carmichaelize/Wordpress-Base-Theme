@@ -298,14 +298,17 @@ class Output {
 	public function drop_letter($string, $class_name = '', $words = array(0)){
 		$word_array = str_split($string);
 		$new_word = '';
-		for($i=0;$i<count($word_array);$i++){
-			if(in_array($i, $words)){
-				$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span>';
-			} else {
-				$new_word .= $word_array[$i];
+		if(count($word_array) > 1){
+			for($i=0;$i<count($word_array);$i++){
+				if(in_array($i, $words)){
+					$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span>';
+				} else {
+					$new_word .= $word_array[$i];
+				}
 			}
+			return $new_word;
 		}
-		return $new_word;
+		return '<span class="'.$class_name.'">'.$string.'</span> ';
 	}
 
 	/**
@@ -321,14 +324,17 @@ class Output {
 	public function drop_word($string, $class_name = '', $words = array(0)){
 		$word_array = explode(' ', $string);
 		$new_word = '';
-		for($i=0;$i<count($word_array);$i++){
-			if(in_array($i, $words)){
-				$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span> ';
-			} else {
-				$new_word .= $word_array[$i].' ';
+		if(count($word_array) > 1){
+			for($i=0;$i<count($word_array);$i++){
+				if(in_array($i, $words)){
+					$new_word .= '<span class="'.$class_name.'">'.$word_array[$i].'</span> ';
+				} else {
+					$new_word .= $word_array[$i].' ';
+				}
 			}
+			return $new_word;
 		}
-		return $new_word;
+		return '<span class="'.$class_name.'">'.$string.'</span> ';
 	}
 
 	/**
