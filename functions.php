@@ -25,6 +25,9 @@ new sc_page_template_style();
 // include_once('inc/classes/product_post_type.php');
 // new sc_product_post_type();
 
+include_once('inc/classes/multichoice_meta.php');
+new sc_multichoice_meta();
+
 //Theme Specific Functions
 include_once('inc/functions.php');
 
