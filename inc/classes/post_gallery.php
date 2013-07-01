@@ -16,13 +16,13 @@ class sc_page_slider_images {
                 );
         }
 
-        public function page_template_add() {
+        public function custom_meta_add() {
 
             foreach($this->options->post_types as $post_type){
                     add_meta_box(
                             $this->options->unique_id, // Unique ID
                             esc_html__( $this->options->title, 'example' ), //Title
-                            array(&$this, 'page_template_render' ), // Callback (builds html)
+                            array(&$this, 'custom_meta_render' ), // Callback (builds html)
                             $post_type, // Admin page (or post type)
                             $this->options->context, // Context
                             $this->options->priority, // Priority
@@ -32,7 +32,7 @@ class sc_page_slider_images {
 
         }
 
-        public function page_template_render($object, $box){
+        public function custom_meta_render($object, $box){
 
             wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
@@ -287,7 +287,7 @@ class sc_page_slider_images {
 
         <?php }
 
-        public function page_template_save($post_id, $post=false){
+        public function custom_meta_save($post_id, $post=false){
 
                 /* Verify the nonce before proceeding. */
                 if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
@@ -325,29 +325,24 @@ class sc_page_slider_images {
 
         }
 
-        /**
-         * Function for processing and storing all book data.
-         */
-        private function process_book_meta( $post_id, $post ) {
-                update_post_meta( $post_id, '_image_id', $_POST['upload_image_id'] );
-        }
-        
-        
-        /**
-         * Set a more appropriate placeholder text for the New Book title field
-         */
-        public function enter_title_here( $text, $post ) {
-                if ( $post->post_type == 'book' ) return __( 'Book Title' );
-                return $text;
-        }
 
-        public function page_template_setup() {
+        // private function process_book_meta( $post_id, $post ) {
+        //         update_post_meta( $post_id, '_image_id', $_POST['upload_image_id'] );
+        // }
+        
+        
+        // public function enter_title_here( $text, $post ) {
+        //         if ( $post->post_type == 'book' ) return __( 'Book Title' );
+        //         return $text;
+        // }
+
+        public function custom_meta_setup() {
 
                 //Add Box
-                add_action( 'add_meta_boxes', array(&$this, 'page_template_add' ));
+                add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 
                 /* Save Box */
-                add_action( 'save_post', array(&$this, 'page_template_save'));
+                add_action( 'save_post', array(&$this, 'custom_meta_save'));
                 
         }
 
@@ -356,7 +351,7 @@ class sc_page_slider_images {
             //Create 'Options' Object
             $this->options = $this->build_options();
 
-            add_action( 'init', array(&$this, 'page_template_setup'));
+            add_action( 'init', array(&$this, 'custom_meta_setup'));
 
         }
 }

@@ -16,7 +16,7 @@ class sc_page_template_style {
 		);
 	}
 
-	public function custom_meta_add() {
+	public function custom_meta_add(){
 
 		foreach($this->options->post_types as $post_type){
 			add_meta_box(

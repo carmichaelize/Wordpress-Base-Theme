@@ -355,5 +355,4 @@ class Output {
 
 }
 
-
 ?>
