@@ -13,11 +13,17 @@ class sc_multichoice_meta {
 			'unique_id'=>'sc_multichoice_meta', //unique prefix
 			'title'=>'Related Content', //title
 			'context'=>'side', //normal, advanced, side
-			'priority'=>'default' //default, core, high, low
+			'priority'=>'default', //default, core, high, low
+			'show_on'=> false //show only on specified pages
 		);
 	}
 
 	public function custom_meta_add() {
+
+		//Show Only On Specific Pages
+		if( $this->options->show_on && !in_array(get_the_id(), $this->options->show_on) ){
+			return false;
+		}
 
 		foreach($this->options->post_types as $post_type){
 			add_meta_box(
@@ -42,12 +48,12 @@ class sc_multichoice_meta {
 
 		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
+		//Get Preset Data
 		$list = get_post_meta($object->ID, $this->options->unique_id);
 
+		//Get Posts
 		$args = array(
 			'post_type' => $this->options->post_types_to_display,
-			//'order' => 'ASC',
-			//'orderby' => 'menu_order',
 			'order' => 'ASC',
 			'orderby' => 'title',
 			'posts_per_page'=>-1
@@ -59,7 +65,7 @@ class sc_multichoice_meta {
 
 		<p><em>Choose the items to be included.</em></p>
 
-		<select class="widefat" id="<?php echo $this->options->unique_id ?>_select">
+		<select class="widefat" id="<?php echo $this->options->unique_id; ?>_select">
 
 			<option value="">-- Select --</option>
 
@@ -80,7 +86,7 @@ class sc_multichoice_meta {
 		</select>
 
 		<!-- Output List -->
-		<ul id="<?php echo $this->options->unique_id ?>_container">
+		<ul id="<?php echo $this->options->unique_id; ?>_container">
 
 			<li class="button temp">
 				<input type="hidden" name="" value="" />
@@ -97,7 +103,7 @@ class sc_multichoice_meta {
 
 							<li class="button">
 								<?php echo $post->post_title; ?>
-								<input type="hidden" name="<?php echo $this->options->unique_id ?>[]" value="<?php echo $post->ID; ?>" />
+								<input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" value="<?php echo $post->ID; ?>" />
 								<span class="remove"></span>
 							</li>
 
@@ -203,14 +209,17 @@ class sc_multichoice_meta {
 				display: none;
 			}
 
-			
-
 		</style>
 
 
 	<?php }
 
 	public function custom_meta_save($post_id, $post=false){
+
+		//Show Only On Specific Pages
+		if( $this->options->show_on && !in_array(get_the_id(), $this->options->show_on) ){
+			return false;
+		}
 
 		/* Verify the nonce before proceeding. */
 		if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
@@ -254,14 +263,12 @@ class sc_multichoice_meta {
 		//Add Box
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 
-		/* Save Box */
+		//Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		
 	}
 
 	public function __construct($params = array()){
-
-		echo $defaults;
 
 		//Create 'Options' Object
 		$this->options = (object)array_merge($this->build_options(), $params);
@@ -270,5 +277,16 @@ class sc_multichoice_meta {
 
 	}
 }
+
+/* Return Data */
+function playa($id, $meta_id){
+
+	$data = get_post_meta( $id, $meta_id, true );
+	return $data ? $data : false;
+
+}
+
+
+
 
 ?>

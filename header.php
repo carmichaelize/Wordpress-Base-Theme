@@ -19,8 +19,12 @@
 
 	  	<!-- Stylesheets-->
 		<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-		<!--[if IE 7]>
+		<!--[if lt IE 9]>
+			<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie8.css" />
+	  	<![endif]-->
+		<!--[if IE 8]>
 	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.min.css" />
+	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie7.css" />
 	  	<![endif]-->
 
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
@@ -32,6 +36,8 @@
 	<body>
 
 		<div class="wrapper">
+
+			<?php get_search_form(); ?> 
 			
 			<header id="header">
 
@@ -52,5 +58,7 @@
 				<div class="clear"></div>
 
 			</header><!-- /#header -->
+
+			<?php var_dump(playa(1, 'sc_multichoice_meta')); ?>
 
 			<section class="inner-wrapper">

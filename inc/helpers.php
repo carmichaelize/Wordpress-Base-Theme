@@ -161,11 +161,12 @@ class Str {
 	public static function limit($string = '', $limit, $trail = '...'){
 		
 		$string = trim(strip_tags($string));
+		return static::length($string) <= $limit ? $string : substr($string, 0, $limit).$trail ;
 
-		if (static::length($string) <= $limit){
-			return $string;
-		}
-		return substr($string, 0, $limit).$trail;
+		// if (static::length($string) <= $limit){
+		// 	return $string;
+		// }
+		// return substr($string, 0, $limit).$trail;
 	}
 
 	/**
@@ -266,10 +267,12 @@ class Output {
 	*/
 
 	public function odd_even($count = 1){
-		if($count % 2 == 0){
-			return "even";
-		}
-		return "odd";
+
+		return $count % 2 == 0 ? "even" : "odd";
+		// if($count % 2 == 0){
+		// 	return "even";
+		// }
+		// return "odd";
 	}
 
 	/**
@@ -347,10 +350,13 @@ class Output {
 	*/
 
 	public function date_format($date = '', $format = "d/m/Y"){
-		if( is_int($date) ){
-			return date( $format, $date );
-		}
-		return date_format( date_create($date), $format ); 		
+		
+		return is_int($date) ? date( $format, $date ) : date_format( date_create($date), $format );
+
+		// if( is_int($date) ){
+		// 	return date( $format, $date );
+		// }
+		// return date_format( date_create($date), $format ); 		
 	}
 
 }

@@ -33,7 +33,8 @@ new sc_multichoice_meta(array(
 		'post_types_to_display' => array('post', 'page'), //post types to be included in list
 		'title'=>'Related Content', //meta box title
 		'context'=>'side', //normal, advanced, side
-		'priority'=>'high' //default, core, high, low
+		'priority'=>'high', //default, core, high, low
+		'show_on' => array(1) //show only on specified pages
 ));
 
 new sc_multichoice_meta(array(
