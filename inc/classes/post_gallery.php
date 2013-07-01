@@ -62,7 +62,7 @@ class sc_page_slider_images {
 
                 <?php foreach($images as $image): ?>
 
-                    <?php if($image): ?>
+                    <?php if( $image && wp_get_attachment_url( $image ) ) : ?>
 
                     <?php
 
