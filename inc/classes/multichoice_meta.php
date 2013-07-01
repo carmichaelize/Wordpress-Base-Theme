@@ -7,12 +7,13 @@ class sc_multichoice_meta {
 
 	//Build 'Defaults' Object
 	public function build_options() {
-		return (object)array(
+		return array(
 			'post_types' => array('post'),
+			'post_types_to_display' => array('post'),
 			'unique_id'=>'sc_multichoice_meta', //unique prefix
-			'title'=>'Related Staff', //title
+			'title'=>'Related Content', //title
 			'context'=>'side', //normal, advanced, side
-			'priority'=>'high' //default, core, high, low
+			'priority'=>'default' //default, core, high, low
 		);
 	}
 
@@ -34,17 +35,8 @@ class sc_multichoice_meta {
 
 	public function custom_meta_render($object, $box){
 
-
-					/*foreach($list[0] as $item): ?>
-
-				<?php $post = get_post($item); var_dump($post); ?>
-
-				<li><input name="<?php echo $this->options->unique_id ?>[]" value="<?php echo $item; ?>"></li>
-
-			<?php endforeach;*/
-
 		//Load CSS
-        ///add_action('admin_footer', array(&$this, 'load_css'), 998);
+        add_action('admin_footer', array(&$this, 'load_css'), 998);
         //Load JS
         add_action('admin_footer', array(&$this, 'load_js'), 999);
 
@@ -53,7 +45,7 @@ class sc_multichoice_meta {
 		$list = get_post_meta($object->ID, $this->options->unique_id);
 
 		$args = array(
-			'post_type' => array('page', 'post'),
+			'post_type' => $this->options->post_types_to_display,
 			//'order' => 'ASC',
 			//'orderby' => 'menu_order',
 			'order' => 'ASC',
@@ -65,7 +57,7 @@ class sc_multichoice_meta {
 
 	?>		
 
-		<em>Hold down the control (ctrl) button to select multiple options</em>
+		<p><em>Choose the items to be included.</em></p>
 
 		<select class="widefat" id="<?php echo $this->options->unique_id ?>_select">
 
@@ -75,7 +67,11 @@ class sc_multichoice_meta {
 
 				<?php foreach($posts as $post): ?>
 
-					<option value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
+					<?php if( !in_array($post->ID, $list[0]) ) : ?>
+
+						<option value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
+
+					<?php endif; ?>
 
 				<?php endforeach; ?>
 
@@ -115,33 +111,6 @@ class sc_multichoice_meta {
 
 		</ul>
 
-		<style>
-
-			#<?php echo $this->options->unique_id ?>_container .button{
-				display: block;
-				margin-bottom: 4px;
-				position: relative;
-				cursor: move;			
-			}
-
-			#<?php echo $this->options->unique_id ?>_container .button span.remove{
-				position: absolute;
-				top:0;
-				right:0;
-				background: transparent url('/wp-admin/images/xit.gif') center left no-repeat;
-				width:10px;
-				height: 100%;
-				right:8px;
-				display: inline-block;
-				cursor: pointer;
-			}
-
-			#<?php echo $this->options->unique_id ?>_container li.temp {
-				display: none;
-			}
-
-		</style>
-
 	<?php }
 
 	public function load_js(){ ?>
@@ -161,33 +130,82 @@ class sc_multichoice_meta {
 
 					if(value){
 						
-						var new_item = $('.button.temp').clone();
-
+						//Prepare and Add New Item to List
+						var new_item = selection_list.children('.button.temp').clone();
 						new_item.removeClass('temp').prepend(label).children('input').attr({
 							name : '<?php echo $this->options->unique_id ?>[]',
 							value : value
 						});
-
 						selection_list.append(new_item);
+
+						//Hide Selected Option
+						select_box.children('option[value='+value+']').hide();
+
+						//Reset Select Box
+						select_box.children('option:first-child').attr('selected', true);
+
 					}
 
 				});
 
 				//Remove Item
 				selection_list.on('click', 'span.remove', function(){
-
+					
+					//Fade Out and Remove Item From List
 					$(this).parent('li').fadeOut(300, function(){
 						$(this).remove();
 					});
 					
+					//Readd Option to Select Box
+					select_box.children('option[value='+$(this).siblings('input').val()+']').show();
 				});
 
-				//jQuery Sortable / Change Image Order
+				//jQuery Sortable / Change Item Order
                 selection_list.sortable({ appendTo: document.body });
 
 			});
 
 		</script>
+
+
+	<?php }
+
+	public function load_css(){ ?>
+
+		<style>
+
+			ul#<?php echo $this->options->unique_id ?>_container {
+				border-top:1px solid #DFDFDF;
+				padding-top:12px;
+			}
+
+			#<?php echo $this->options->unique_id ?>_container .button{
+				display: block;
+				margin-bottom: 4px;
+				position: relative;
+				cursor: move;
+				background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;		
+			}
+
+			#<?php echo $this->options->unique_id ?>_container .button span.remove{
+				position: absolute;
+				top:0;
+				right:0;
+				background: transparent url('/wp-admin/images/xit.gif') center left no-repeat;
+				width:10px;
+				height: 100%;
+				right:8px;
+				display: inline-block;
+				cursor: pointer;
+			}
+
+			#<?php echo $this->options->unique_id ?>_container li.temp {
+				display: none;
+			}
+
+			
+
+		</style>
 
 
 	<?php }
@@ -241,10 +259,12 @@ class sc_multichoice_meta {
 		
 	}
 
-	public function __construct(){
+	public function __construct($params = array()){
+
+		echo $defaults;
 
 		//Create 'Options' Object
-		$this->options = $this->build_options();
+		$this->options = (object)array_merge($this->build_options(), $params);
 
 		add_action( 'init', array(&$this, 'custom_meta_setup'));
 

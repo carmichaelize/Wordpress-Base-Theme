@@ -26,7 +26,24 @@ new sc_page_template_style();
 // new sc_product_post_type();
 
 include_once('inc/classes/multichoice_meta.php');
-new sc_multichoice_meta();
+
+new sc_multichoice_meta(array(
+		'unique_id'=>'sc_multichoice_meta', //unique prefix
+		'post_types' => array('post'), //post type to display on
+		'post_types_to_display' => array('post', 'page'), //post types to be included in list
+		'title'=>'Related Content', //meta box title
+		'context'=>'side', //normal, advanced, side
+		'priority'=>'high' //default, core, high, low
+));
+
+new sc_multichoice_meta(array(
+		'post_types' => array('post'), //post type to display on
+		'post_types_to_display' => array('page'), //post types to be included in list
+		'unique_id'=>'sc_multichoice_meta_2', //unique prefix
+		'title'=>'Related Staff', //title
+		'context'=>'side', //normal, advanced, side
+		'priority'=>'high' //default, core, high, low
+));
 
 //Theme Specific Functions
 include_once('inc/functions.php');
