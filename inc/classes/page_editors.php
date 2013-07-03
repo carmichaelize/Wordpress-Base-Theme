@@ -12,7 +12,7 @@ class sc_post_types_text_editors {
 			'title'		 => 'Page Content', //title
 			'context'	 => 'normal', //normal, advanced, side
 			'priority'	 => 'default', //default, core, high, low
-			'editors' 	 => array('first_editor' => 'First Editor') //editors to be included (value => label)
+			'editors' 	 => array('first_editor' => 'First Editor', 'second_editor' => 'Scott Editor') //editors to be included (value => label)
 		);
 	}
 
@@ -60,7 +60,7 @@ class sc_post_types_text_editors {
 					<input id="<?php echo $item; ?>_title" type="text" class="regular-text" name="<?php echo $this->options->unique_id; ?>[<?php echo $item; ?>_title]" value="<?php echo $data[$item.'_title']; ?>" />
 				</p>
 				
-				<textarea id="tinymce_<?php echo  $count; ?>" class="mceEditor" name="<?php echo $this->options->unique_id?>[<?php echo $item; ?>_text]"><?php echo $data[$item.'_text']; ?></textarea>
+				<textarea class="wp_themeSkin" id="tinymce_<?php echo  $count; ?>" class="mceEditor" name="<?php echo $this->options->unique_id?>[<?php echo $item; ?>_text]"><?php echo $data[$item.'_text']; ?></textarea>
 
 			</div>
 
@@ -97,21 +97,43 @@ class sc_post_types_text_editors {
 				border-top:none;
 			}
 
+			#<?php echo $this->options->unique_id; ?> .defaultSkin > table {
+				border: 1px solid #D1D1D1;
+				border-radius: 5px;
+				overflow: hidden;
+			}
+
 			/* Editor Styles */
 
 			#<?php echo $this->options->unique_id; ?> .defaultSkin td.mceToolbar, .defaultSkin .mceStatusbar{
 				background:linear-gradient(to top, #E5E5E5, #F4F4F4) repeat scroll 0 0 #EEEEEE;
 				padding:5px;
+				border-top: none;
+				border-radius: 5px 5px 0 0;
 			}
 
-			#<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton {
+			#<?php echo $this->options->unique_id; ?> .mceToolbar {
+				margin-bottom:0;
+			}
+
+			#<?php echo $this->options->unique_id; ?> .defaultSkin .mceIframeContainer{
+				border:none;
+			}
+
+			#<?php echo $this->options->unique_id; ?> .defaultSkin table.mceLayout tr.mceLast td {
+				border-top: 1px solid #D1D1D1;
+				border-bottom:none;
+				border-radius:0 0 5px 5px;
+			}
+
+			/*#<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton {
 				border: 1px solid transparent;
 			}
 
 			#<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton:hover, #<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton.mceButtonActive {
 				background:#fff;
 				border: 1px solid #bbb;
-			}
+			}*/
 
 		</style>
 
@@ -125,11 +147,13 @@ class sc_post_types_text_editors {
 		?>
 
 		<script>
-			jQuery(document).ready(function(){
+			jQuery(document).ready(function($){
 			    //jQuery("#tinymce").addClass("mceEditor");
 			    if ( typeof( tinyMCE ) == "object" && typeof( tinyMCE.execCommand ) == "function" ) {
 			    	tinyMCE.settings = {
-				        //theme : "advanced",
+				        theme : "advanced", //wp_themeSkin
+				        //body_class: "wp_themeSkin",
+				        //body_id: "my_id",
 				        mode : "",
 				        language : "en",
 				        height:"300",
@@ -137,10 +161,16 @@ class sc_post_types_text_editors {
 				        //theme_advanced_layout_manager : "SimpleLayout",
 				        theme_advanced_toolbar_location : "top",
 				        theme_advanced_toolbar_align : "left",
-				        theme_advanced_buttons1 : "bold, italic, underline, strikethrough, link, |, justifyleft, justifycenter, justifyright, justifyfull, |, bullist, numlist, outdent, indent, code",
+				        theme_advanced_buttons1 : "bold, italic, underline, strikethrough, blockquote, bullist, numlist, justifyleft, justifycenter, justifyright, link, unlink, code",
 				        theme_advanced_buttons2 : "",
 				        theme_advanced_buttons3 : "",
-					    content_css : "<?php echo TEMPLATE_PATH; ?>/css/custom_editor_styles.css"
+					    content_css : "<?php echo TEMPLATE_PATH; ?>/css/custom_editor_styles.css",
+					    setup : function(ed) {
+						    ed.onNodeChange.add(function(ed, evt) {
+						        //console.log(ed);
+						        $('#'+ed.editorContainer).addClass('wp_themeSkin');
+						    });
+						}
 					};
 
 			        <?php foreach($this->options->editors as $item => $label) : $count++; ?>
@@ -149,7 +179,12 @@ class sc_post_types_text_editors {
 
 			        <?php endforeach; ?>
 			    }
+			    
+
 			});
+
+			
+
 		</script>
 
 	<?php

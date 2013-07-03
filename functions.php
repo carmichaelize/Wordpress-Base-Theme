@@ -20,7 +20,7 @@ include_once('inc/classes/post_gallery.php');
 new sc_page_slider_images();
 
 include_once('inc/classes/template_options.php');
-new sc_page_template_style();
+new sc_post_type_template_select();
 
 // include_once('inc/classes/product_post_type.php');
 // new sc_product_post_type();
@@ -48,6 +48,9 @@ include_once('inc/classes/multichoice_meta.php');
 
 include_once('inc/classes/icon_meta.php');
 new sc_icon_meta();
+
+include_once('inc/classes/page_editors.php');
+new sc_post_types_text_editors(array('unique_id'=>'test'));
 
 //Theme Specific Functions
 include_once('inc/functions.php');

@@ -1,4 +1,7 @@
 /* Text Editor Overwrites */
-body#tinymce {
+body#tinymce, body#tinymce pre{
   font-size: 13px !important;
+  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif !important;
+  line-height: 19px !important;
+  color:#333 !important;
 }
