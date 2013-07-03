@@ -73,11 +73,7 @@ class sc_multichoice_meta {
 
 				<?php foreach($posts as $post): ?>
 
-					<?php if( !in_array($post->ID, $list[0]) ) : ?>
-
-						<option value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
-
-					<?php endif; ?>
+					<option <?php echo in_array($post->ID, $list[0]) ? 'style="display:none;"' : '' ; ?> value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
 
 				<?php endforeach; ?>
 
@@ -280,10 +276,8 @@ class sc_multichoice_meta {
 
 /* Return Data */
 function playa($id, $meta_id){
-
 	$data = get_post_meta( $id, $meta_id, true );
 	return $data ? $data : false;
-
 }
 
 

@@ -1,0 +1,4 @@
+/* Text Editor Overwrites */
+body#tinymce {
+  font-size: 13px !important;
+}

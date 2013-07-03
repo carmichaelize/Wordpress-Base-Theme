@@ -62,7 +62,15 @@ class sc_testimonial_post_type {
 	// 	register_taxonomy( 'location', 'products', $this->post_taxonomy_options() );
 	// }
 
-	public function post_type_menu_image(){ ?>   
+	public function post_type_menu_image(){ 
+		//Menu Sprite Positions (remeber to change CSS selector below!)
+			//Page -149px -33px, -149px -1px
+			//Speech Buble -29px -33px, -29px -1px
+			//Media -119px -33px, -119px -1px
+			//Users -300px -33px, -300px -1px
+			//Apperance 1px -33px, 1px -1px
+			//Tools -209px -33px, -209px -1px
+			//Settings -239px -33px, -239px -1px ?>   
 		
 		<style>
 		    #menu-posts-testimonials .wp-menu-image {
@@ -116,21 +124,21 @@ class sc_testimonial_post_type {
 
 		?>
 			<p>
-				<label for="sc_job_position">Name:</label>
+				<label for="sc_job_name">Name:</label>
 				<br />
-				<input type="text" class="widefat" name="<?php echo $this->options->unique_id; ?>[name]" value="<?php echo $data['name'] ?>" />
+				<input type="text" id="sc_job_name" class="widefat" name="<?php echo $this->options->unique_id; ?>[name]" value="<?php echo $data['name'] ?>" />
 			</p>
 
 			<p>
-				<label for="sc_job_position">Company:</label>
+				<label for="sc_job_comapny">Company:</label>
 				<br />
-				<input type="text" class="widefat" name="<?php echo $this->options->unique_id; ?>[company]" value="<?php echo $data['company'] ?>" />
+				<input type="text" id="sc_job_comapny" class="widefat" name="<?php echo $this->options->unique_id; ?>[company]" value="<?php echo $data['company'] ?>" />
 			</p>
 
 			<p>
 				<label for="sc_job_position">Position:</label>
 				<br />
-				<input type="text" class="widefat" name="<?php echo $this->options->unique_id; ?>[position]" value="<?php echo $data['position'] ?>" />
+				<input type="text" id="sc_job_position" class="widefat" name="<?php echo $this->options->unique_id; ?>[position]" value="<?php echo $data['position'] ?>" />
 			</p>
 
 		<?php 
@@ -171,7 +179,7 @@ class sc_testimonial_post_type {
 		//Add Box
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 
-		/* Save Box */
+		//Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		
 	}

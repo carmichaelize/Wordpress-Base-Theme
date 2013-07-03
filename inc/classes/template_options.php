@@ -1,18 +1,18 @@
 <?php
 
-/* Page Template Option */
-class sc_page_template_style {
+class sc_post_type_template_select {
 
 	public $options = null;
 
 	//Build 'Defaults' Object
 	public function build_options() {
-		return (object)array(
+		return array(
 			'unique_id'=>'sc_page_template_style', //unique prefix
-			'post_types' => array('post', 'page'), //post types
+			'post_types' => array('page'), //post types
 			'title'=>'Page Template', //title
 			'context'=>'side', //normal, advanced, side
-			'priority'=>'default' //default, core, high, low
+			'priority'=>'default', //default, core, high, low
+			'options'=> array('template_one' => 'Template One')
 		);
 	}
 
@@ -43,11 +43,23 @@ class sc_page_template_style {
 		?>
 
 		<p>
-			<select class="widefat" name="<?php echo $this->options->unique_id; ?>">
-				<option <?php echo $data == 'one_column' ? 'selected' : '' ; ?> value="one_column">One Column</option>
-				<option <?php echo $data == 'two_column' ? 'selected' : '' ; ?> value="two_column">Two Column</option>
+			<select class="widefat" name="<?php echo $this->options->unique_id; ?>[template]">
+
+				<?php foreach($this->options->options as $option_value => $option_label) : ?>
+
+					<option <?php echo $data['template'] == $option_value ? 'selected' : '' ; ?> value="<?php echo $option_value; ?>"><?php echo $option_label; ?></option>
+
+				<?php endforeach; ?>
+
 			</select>
 		</p>
+
+		<!-- <p>
+			<label for="sc_include_testimonial">
+				<input id="sc_include_testimonial" type="checkbox" name="<?php echo $this->options->unique_id; ?>[testimonial]" <?php echo $data['testimonial'] ? 'checked' : '' ; ?> > 
+				Include Testimonial?
+			</label>
+		</p> -->
 
 		<?php 
 	}
@@ -85,9 +97,9 @@ class sc_page_template_style {
 			
 
 		/* If there is no new meta value but an old value exists, delete it. */
-		// elseif ( '' == $new_meta_value && $meta_value ){
-		// 	delete_post_meta( $post_id, $this->options->unique_id, $meta_value );
-		// }
+		elseif ( '' == $new_meta_value && $meta_value ){
+			delete_post_meta( $post_id, $this->options->unique_id, $meta_value );
+		}
 			
 
 	}
@@ -96,16 +108,20 @@ class sc_page_template_style {
 
 		//Add Box
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
-
-		/* Save Box */
+		// Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		
 	}
 
-	public function __construct(){
+	public function __construct($params = array()){
+
+		//Check Unique ID Isset
+		if( !isset($params['unique_id']) ){
+			return false;
+		}
 
 		//Create 'Options' Object
-		$this->options = $this->build_options();
+		$this->options = (object)array_merge($this->build_options(), $params);
 
 		add_action( 'init', array(&$this, 'custom_meta_setup'));
 
