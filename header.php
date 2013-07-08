@@ -59,6 +59,4 @@
 
 			</header><!-- /#header -->
 
-			<?php var_dump(playa(1, 'sc_multichoice_meta')); ?>
-
 			<section class="inner-wrapper">

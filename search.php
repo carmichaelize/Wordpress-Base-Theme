@@ -1,24 +1,12 @@
 <?php get_header(); ?>
 
-<?php 
-	//Search Query
-	$args = array(
-			's'=> $_GET['s'],
-			'post_type' => array('post', 'page'),
-			'order' => 'ASC',
-			'orderby' => 'title',
-			'posts_per_page'=> 10
-		);
-	$search_query = new WP_Query( $args );
-?>
-
 	<div id="content">
 
 		<h2 class='bodytext_one center-text'><i class="icon-search"></i> Search Results for "<?php echo get_search_query(); ?>"</h2>
 
-		<?php if($search_query->have_posts()) : ?>
+		<?php if(have_posts()) : ?>
 
-			<?php while($search_query->have_posts()) : $search_query->the_post(); ?>
+			<?php while(have_posts()) : the_post(); ?>
 
 			<div class="post">
 
@@ -35,7 +23,8 @@
 			<?php endwhile; ?>
 
 			<div class="navigation">
-				<?php posts_nav_link(); ?>
+				<?php previous_posts_link( 'Newer posts &raquo;' ); ?>
+        		<?php next_posts_link('Older &raquo;') ?>
 			</div>
 
 		<?php else : ?>
@@ -44,7 +33,7 @@
 
 		<?php endif; ?>
 
-		</div>
+	</div>
 
 <?php get_sidebar(); ?>	
 

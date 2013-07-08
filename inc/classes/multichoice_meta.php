@@ -8,13 +8,14 @@ class sc_multichoice_meta {
 	//Build 'Defaults' Object
 	public function build_options() {
 		return array(
-			'post_types' => array('post'),
-			'post_types_to_display' => array('post'),
-			'unique_id'=>'sc_multichoice_meta', //unique prefix
-			'title'=>'Related Content', //title
-			'context'=>'side', //normal, advanced, side
-			'priority'=>'default', //default, core, high, low
-			'show_on'=> false //show only on specified pages
+			'unique_id'				=> 'sc_multichoice_meta', //unique prefix
+			'post_types' 			=> array('post'), //post types to appear
+			'post_types_to_display' => array('post'), //post types to list
+			'title'					=> 'Related Content', //title
+			'context'				=> 'side', //normal, advanced, side
+			'priority'				=> 'default', //default, core, high, low
+			'description'			=> 'Choose the items to be included.', //description text to appear in meta box
+			'show_on'				=> false //show only on specified pages (array of post ids)
 		);
 	}
 
@@ -49,7 +50,7 @@ class sc_multichoice_meta {
 		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
 		//Get Preset Data
-		$list = get_post_meta($object->ID, $this->options->unique_id);
+		$list = is_array( $list = get_post_meta($object->ID, $this->options->unique_id, true) ) ? $list : array() ;
 
 		//Get Posts
 		$args = array(
@@ -63,7 +64,7 @@ class sc_multichoice_meta {
 
 	?>		
 
-		<p><em>Choose the items to be included.</em></p>
+		<p><em><?php echo $this->options->description; ?></em></p>
 
 		<select class="widefat" id="<?php echo $this->options->unique_id; ?>_select">
 
@@ -73,7 +74,7 @@ class sc_multichoice_meta {
 
 				<?php foreach($posts as $post): ?>
 
-					<option <?php echo in_array($post->ID, $list[0]) ? 'style="display:none;"' : '' ; ?> value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
+					<option <?php echo in_array($post->ID, $list) ? 'style="display:none;"' : '' ; ?> value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
 
 				<?php endforeach; ?>
 
@@ -89,9 +90,9 @@ class sc_multichoice_meta {
 				<span class="remove"></span>
 			</li>
 
-			<?php if($list[0]) : ?>
+			<?php if($list) : ?>
 
-				<?php foreach($list[0] as $item): ?>
+				<?php foreach($list as $item): ?>
 
 					<?php foreach($posts as $post): ?>
 
@@ -258,13 +259,17 @@ class sc_multichoice_meta {
 
 		//Add Box
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
-
 		//Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		
 	}
 
 	public function __construct($params = array()){
+
+		//Check Unique ID Isset
+		if( !isset($params['unique_id']) ){
+			return false;
+		}
 
 		//Create 'Options' Object
 		$this->options = (object)array_merge($this->build_options(), $params);
@@ -273,14 +278,5 @@ class sc_multichoice_meta {
 
 	}
 }
-
-/* Return Data */
-function playa($id, $meta_id){
-	$data = get_post_meta( $id, $meta_id, true );
-	return $data ? $data : false;
-}
-
-
-
 
 ?>

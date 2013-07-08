@@ -8,12 +8,13 @@ class sc_icon_meta {
 	//Build 'Defaults' Object
 	public function build_options() {
 		return array(
-			'post_types' => array('post'),
+			'post_types' => array('post'), //post types
 			'unique_id'=>'sc_icon_meta', //unique prefix
 			'title'=>'Icon Meta', //title
 			'context'=>'side', //normal, advanced, side
-			'priority'=>'high', //default, core, high, low
-			'show_on'=> false //show only on specified pages
+			'priority'=>'default', //default, core, high, low
+			'show_on'=> false, //show only on specified pages
+			'description' => 'Select an icon to be displayed.'
 		);
 	}
 
@@ -290,7 +291,7 @@ class sc_icon_meta {
 		             237 => 'icon-laptop',
 		             238 => 'icon-tablet',
 		             239 => 'icon-mobile-phone',
-		             //240 => 'icon-circle-blank',
+		             240 => 'icon-circle-blank',
 		             241 => 'icon-quote-left',
 		             242 => 'icon-quote-right',
 		             243 => '\f110 icon-spinner',
@@ -309,11 +310,13 @@ class sc_icon_meta {
 
                 ?>
 
-                <?php //if( $data['icon'] ) : ?>
-                        <div id="icon-preview">
-                                <i class="<?php echo $data['icon']; ?>"></i>
-                        </div>
-                <?php //endif; ?>
+                <?php if( $this->options->description ) : ?>
+					<p><em><?php echo $this->options->description; ?></em></p>
+				<?php endif; ?>
+
+                <div id="icon-preview">
+                        <i <?php echo !$data['icon'] ? 'style="display:none;"': '' ; ?> class="<?php echo $data['icon']; ?>"></i>
+                </div>
 
                 <p>
                     <select id="sc_icon_select" class="widefat" name="<?php echo $this->options->unique_id; ?>[icon]">
@@ -322,7 +325,7 @@ class sc_icon_meta {
 
                         <?php foreach($icon_list as $key => $icon) : ?>
 
-                                <option class="<?php echo $icon; ?>" value="<?php echo $icon; ?>" <?php echo $icon == $data['icon'] ? 'selected' : '' ; ?> ><?php $icon = explode('-', $icon); echo $icon[1]; ?></option>
+                            <option class="<?php echo $icon; ?>" value="<?php echo $icon; ?>" <?php echo $icon == $data['icon'] ? 'selected' : '' ; ?> ><?php $icon = explode('-', $icon); echo $icon[1]; ?></option>
                         
                         <?php endforeach; ?>
 
@@ -340,14 +343,16 @@ class sc_icon_meta {
 
             jQuery(document).ready(function($){
 
+            	var container = $('#<?php echo $this->options->unique_id; ?>');
+
                 //Wrap Text in Span (Not Web Standard!)
-                $('#sc_icon_select option').each(function(){
-                        $(this).html('<span> - '+$(this).text()+'</span>');
+                container.find('#sc_icon_select option').each(function(){
+                    $(this).html('<span> - ' + $(this).text()+'</span>');
                 });
 
                 //Display Icon On Select
-                $('#sc_icon_select').on('change', function(){
-                        $('#icon-preview i').removeClass().addClass($(this).val());
+                container.find('#sc_icon_select').on('change', function(){
+                    $('#icon-preview i').show().removeClass().addClass($(this).val());
                 });
 
             });
@@ -362,8 +367,12 @@ class sc_icon_meta {
 
             #icon-preview {
                     text-align:center; 
-                    /*padding:10px 0;*/
                     font-size:70px;
+            }
+
+            #icon-preview i {
+            	display: inline-block;
+            	padding:10px 0;
             }
 
             #sc_icon_select option {
@@ -431,6 +440,11 @@ class sc_icon_meta {
 	}
 
 	public function __construct($params = array()){
+
+		//Check Unique ID Isset
+		if( !isset($params['unique_id']) ){
+			return false;
+		}
 
 		//Create 'Options' Object
 		$this->options = (object)array_merge($this->build_options(), $params);

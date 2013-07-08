@@ -178,7 +178,6 @@ class sc_testimonial_post_type {
 
 		//Add Box
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
-
 		//Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
 		

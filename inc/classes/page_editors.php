@@ -1,18 +1,18 @@
 <?php
 
-class sc_post_types_text_editors {
+class sc_post_type_text_editors {
 
 	public $options = null;
 
 	//Build 'Defaults' Object
 	public function build_options(){
 		return array(
-			'unique_id'  => 'sc_page_meta_content', //unique prefix
+			'unique_id'  => 'sc_post_type_text_editors', //unique prefix
 			'post_types' => array('page'), //post types
 			'title'		 => 'Page Content', //title
 			'context'	 => 'normal', //normal, advanced, side
 			'priority'	 => 'default', //default, core, high, low
-			'editors' 	 => array('first_editor' => 'First Editor', 'second_editor' => 'Scott Editor') //editors to be included (value => label)
+			'editors' 	 => array('first_editor' => 'First Editor') //editors (array in input_id => label format)
 		);
 	}
 
@@ -74,12 +74,13 @@ class sc_post_types_text_editors {
 	public function load_css(){ ?>
 
 		<style>
+
 			/* Hide/Reset Default Editor */
-			.postarea{
+			.postarea {
 				display: none;
 			}
 
-			#post-body-content{
+			#post-body-content {
 				margin-bottom: 0;
 			}
 
@@ -105,7 +106,7 @@ class sc_post_types_text_editors {
 
 			/* Editor Styles */
 
-			#<?php echo $this->options->unique_id; ?> .defaultSkin td.mceToolbar, .defaultSkin .mceStatusbar{
+			#<?php echo $this->options->unique_id; ?> .defaultSkin td.mceToolbar, .defaultSkin .mceStatusbar {
 				background:linear-gradient(to top, #E5E5E5, #F4F4F4) repeat scroll 0 0 #EEEEEE;
 				padding:5px;
 				border-top: none;
@@ -126,15 +127,6 @@ class sc_post_types_text_editors {
 				border-radius:0 0 5px 5px;
 			}
 
-			/*#<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton {
-				border: 1px solid transparent;
-			}
-
-			#<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton:hover, #<?php echo $this->options->unique_id; ?> .defaultSkin .mceButton.mceButtonActive {
-				background:#fff;
-				border: 1px solid #bbb;
-			}*/
-
 		</style>
 
 	<?php
@@ -151,9 +143,7 @@ class sc_post_types_text_editors {
 			    //jQuery("#tinymce").addClass("mceEditor");
 			    if ( typeof( tinyMCE ) == "object" && typeof( tinyMCE.execCommand ) == "function" ) {
 			    	tinyMCE.settings = {
-				        theme : "advanced", //wp_themeSkin
-				        //body_class: "wp_themeSkin",
-				        //body_id: "my_id",
+				        theme : "advanced",
 				        mode : "",
 				        language : "en",
 				        height:"300",
@@ -164,26 +154,27 @@ class sc_post_types_text_editors {
 				        theme_advanced_buttons1 : "bold, italic, underline, strikethrough, blockquote, bullist, numlist, justifyleft, justifycenter, justifyright, link, unlink, code",
 				        theme_advanced_buttons2 : "",
 				        theme_advanced_buttons3 : "",
-					    content_css : "<?php echo TEMPLATE_PATH; ?>/css/custom_editor_styles.css",
+					    //content_css : "<?php echo TEMPLATE_PATH; ?>/css/custom_editor_styles.css",
 					    setup : function(ed) {
 						    ed.onNodeChange.add(function(ed, evt) {
 						        //console.log(ed);
 						        $('#'+ed.editorContainer).addClass('wp_themeSkin');
+						  		//Reset Internal Editor Styles (stupid i know)
+						        tinyMCE.activeEditor.dom.setStyle(tinyMCE.activeEditor.dom.select('body#tinymce, body#tinymce pre'), 'font-size', '13px');
+						        tinyMCE.activeEditor.dom.setStyle(tinyMCE.activeEditor.dom.select('body#tinymce, body#tinymce pre'), 'font-family', 'Georgia, "Times New Roman", "Bitstream Charter", Times, serif');
+						        tinyMCE.activeEditor.dom.setStyle(tinyMCE.activeEditor.dom.select('body#tinymce, body#tinymce pre'), 'line-height', '19px');
+						        tinyMCE.activeEditor.dom.setStyle(tinyMCE.activeEditor.dom.select('body#tinymce, body#tinymce pre'), 'color', 'Georgia, "#333');
 						    });
 						}
 					};
 
 			        <?php foreach($this->options->editors as $item => $label) : $count++; ?>
-
 			        	tinyMCE.execCommand("mceAddControl", false, "tinymce_<?php echo $count; ?>");
-
 			        <?php endforeach; ?>
+
 			    }
-			    
 
 			});
-
-			
 
 		</script>
 

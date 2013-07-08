@@ -14,43 +14,29 @@ include_once('inc/wp_helpers.php');
 
 //Custom Classes
 include_once('inc/classes/settings_page.php');
-new sc_theme_settings_page();
-
-include_once('inc/classes/post_gallery.php');
-new sc_page_slider_images();
-
+//include_once('inc/classes/product_post_type.php');
 include_once('inc/classes/template_options.php');
-new sc_post_type_template_select();
-
-// include_once('inc/classes/product_post_type.php');
-// new sc_product_post_type();
-
 include_once('inc/classes/multichoice_meta.php');
-
-// new sc_multichoice_meta(array(
-// 		'unique_id'=>'sc_multichoice_meta', //unique prefix
-// 		'post_types' => array('post'), //post type to display on
-// 		'post_types_to_display' => array('post', 'page'), //post types to be included in list
-// 		'title'=>'Related Content', //meta box title
-// 		'context'=>'side', //normal, advanced, side
-// 		'priority'=>'high', //default, core, high, low
-// 		//'show_on' => array(1) //show only on specified pages
-// ));
-
-// new sc_multichoice_meta(array(
-// 		'post_types' => array('post'), //post type to display on
-// 		'post_types_to_display' => array('page'), //post types to be included in list
-// 		'unique_id'=>'sc_multichoice_meta_2', //unique prefix
-// 		'title'=>'Related Staff', //title
-// 		'context'=>'side', //normal, advanced, side
-// 		'priority'=>'high' //default, core, high, low
-// ));
-
-include_once('inc/classes/icon_meta.php');
-new sc_icon_meta();
-
 include_once('inc/classes/page_editors.php');
-new sc_post_types_text_editors(array('unique_id'=>'test'));
+include_once('inc/classes/post_gallery.php');
+include_once('inc/classes/icon_meta.php');
+
+
+new sc_theme_settings_page();
+new sc_page_slider_images();
+new sc_post_type_template_select(array('unique_id'=>'template_select'));
+// new sc_product_post_type();
+new sc_multichoice_meta(array(
+		'unique_id'=>'sc_multichoice_meta', //unique prefix
+		'post_types' => array('post'), //post type to display on
+		'post_types_to_display' => array('post', 'page'), //post types to be included in list
+		'title'=>'Related Content', //meta box title
+		'context'=>'side', //normal, advanced, side
+		'priority'=>'high', //default, core, high, low
+		//'show_on' => array(1) //show only on specified pages
+));
+new sc_icon_meta(array('unique_id'=>'icon_test'));
+new sc_post_type_text_editors(array('unique_id'=>'test'));
 
 //Theme Specific Functions
 include_once('inc/functions.php');

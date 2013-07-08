@@ -7,12 +7,14 @@ class sc_post_type_template_select {
 	//Build 'Defaults' Object
 	public function build_options() {
 		return array(
-			'unique_id'=>'sc_page_template_style', //unique prefix
-			'post_types' => array('page'), //post types
-			'title'=>'Page Template', //title
-			'context'=>'side', //normal, advanced, side
-			'priority'=>'default', //default, core, high, low
-			'options'=> array('template_one' => 'Template One')
+			'unique_id'	  => 'sc_post_type_template_select', //unique prefix
+			'post_types'  => array('page'), //post types
+			'title'		  => 'Page Template', //meta box title
+			'context'     => 'side', //normal, advanced, side
+			'priority'    => 'default', //default, core, high, low
+			'description' => 'Select a page template to use.', //description text to appear in meta box
+			'options'	  => array('template_one' => 'Template One'), //select box (array in input_id => label format)
+			'switches'    => null //checkboxes (array of arrays eg. array('label'=>'Show Testimonial', 'input_id'=>'input_id'))
 		);
 	}
 
@@ -42,6 +44,10 @@ class sc_post_type_template_select {
 
 		?>
 
+		<?php if( $this->options->description ) : ?>
+			<p><em><?php echo $this->options->description; ?></em></p>
+		<?php endif; ?>
+
 		<p>
 			<select class="widefat" name="<?php echo $this->options->unique_id; ?>[template]">
 
@@ -54,12 +60,20 @@ class sc_post_type_template_select {
 			</select>
 		</p>
 
-		<!-- <p>
-			<label for="sc_include_testimonial">
-				<input id="sc_include_testimonial" type="checkbox" name="<?php echo $this->options->unique_id; ?>[testimonial]" <?php echo $data['testimonial'] ? 'checked' : '' ; ?> > 
-				Include Testimonial?
-			</label>
-		</p> -->
+		<?php if( $this->options->switches ) : ?>
+
+			<?php foreach($this->options->switches as $switch ) : ?>
+				<?php if( is_array($switch) && $switch['input_id'] && $switch['input_id'] ) : ?>
+					<p>
+						<label>
+							<input type="checkbox" name="<?php echo $this->options->unique_id; ?>[<?php echo $switch['input_id']; ?>]" <?php echo $data[$switch['input_id']] ? 'checked' : '' ; ?> > 
+							<?php echo $switch['label']; ?>
+						</label>
+					</p>
+				<?php endif; ?>
+			<?php endforeach; ?>
+
+		<?php endif; ?>
 
 		<?php 
 	}

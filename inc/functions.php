@@ -59,7 +59,6 @@ function footer_widgets() {
 }
 add_action( 'init', 'footer_widgets' );
 
-
 /*
 |--------------------------------------------------------------------------
 | Custom Menus
