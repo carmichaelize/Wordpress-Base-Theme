@@ -261,6 +261,7 @@ li.clear {
     display: block !important;
     float:none !important;
     width:100% !important;
+    height:0 !important;
     padding:0 !important;
     margin:0 !important;
     background:0 !important;
@@ -280,4 +281,8 @@ li.clear {
 
 .hide {
     display:none;
+}
+
+.invisible {
+    visibility: hidden;
 }

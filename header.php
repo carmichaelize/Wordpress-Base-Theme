@@ -41,7 +41,7 @@
 			
 			<header id="header">
 
-				<h1><a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a></h1>
+				<a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a>
 
 				<?php
 					if( has_nav_menu('navigation-menu')){

@@ -28,7 +28,7 @@
 
 				<div class="clear"></div>
 
-				<strong>Copyright 2012 <?php bloginfo('name'); ?> | All Rights Reserved.</strong> 
+				<strong>&copy; Copyright <?php echo date('Y'); ?> <?php bloginfo('name'); ?> | All Rights Reserved.</strong> 
 				Designed by <a href="http://www.scottcarmichael.co.uk">Scott Carmichael</a>
 
 			</footer><!-- /#footer -->
