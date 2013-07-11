@@ -23,7 +23,8 @@ include_once('inc/classes/icon_meta.php');
 
 
 new sc_theme_settings_page();
-new sc_page_slider_images();
+new sc_page_slider_images(array('unique_id'=>'gallery_1'));
+new sc_page_slider_images(array('unique_id'=>'gallery_2'));
 new sc_post_type_template_select(array('unique_id'=>'template_select'));
 // new sc_product_post_type();
 new sc_multichoice_meta(array(
