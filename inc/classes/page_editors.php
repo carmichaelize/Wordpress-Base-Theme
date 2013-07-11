@@ -107,7 +107,13 @@ class sc_post_type_text_editors {
 			/* Editor Styles */
 
 			#<?php echo $this->options->unique_id; ?> .defaultSkin td.mceToolbar, .defaultSkin .mceStatusbar {
-				background:linear-gradient(to top, #E5E5E5, #F4F4F4) repeat scroll 0 0 #EEEEEE;
+				background: #E5E5E5;
+                background: -moz-linear-gradient(top,  #E5E5E5 0%, #F4F4F4 100%);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E5E5E5), color-stop(100%,#F4F4F4));
+                background: -webkit-linear-gradient(top,  #E5E5E5 0%,#F4F4F4 100%);
+                background: -o-linear-gradient(top,  #E5E5E5 0%,#F4F4F4 100%);
+                background: -ms-linear-gradient(top,  #E5E5E5 0%,#F4F4F4 100%);
+                background: linear-gradient(to bottom,  #E5E5E5 0%,#F4F4F4 100%);
 				padding:5px;
 				border-top: none;
 				border-radius: 5px 5px 0 0;

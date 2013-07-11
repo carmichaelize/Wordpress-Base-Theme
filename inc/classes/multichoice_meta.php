@@ -187,7 +187,13 @@ class sc_multichoice_meta {
 				margin-bottom: 4px;
 				position: relative;
 				cursor: move;
-				background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;		
+				background: #ffffff;
+                background: -moz-linear-gradient(top,  #F9F9F9 0%, #dfdfdf 100%);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F9F9F9), color-stop(100%,#dfdfdf));
+                background: -webkit-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
+                background: -o-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
+                background: -ms-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
+                background: linear-gradient(to bottom,  #F9F9F9 0%,#dfdfdf 100%);	
 			}
 
 			#<?php echo $this->options->unique_id ?>_container .button span.remove{

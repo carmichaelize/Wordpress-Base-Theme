@@ -23,8 +23,6 @@ include_once('inc/classes/icon_meta.php');
 
 
 new sc_theme_settings_page();
-new sc_page_slider_images(array('unique_id'=>'gallery_1'));
-new sc_page_slider_images(array('unique_id'=>'gallery_2'));
 new sc_post_type_template_select(array('unique_id'=>'template_select'));
 // new sc_product_post_type();
 new sc_multichoice_meta(array(
@@ -33,11 +31,14 @@ new sc_multichoice_meta(array(
 		'post_types_to_display' => array('post', 'page'), //post types to be included in list
 		'title'=>'Related Content', //meta box title
 		'context'=>'side', //normal, advanced, side
-		'priority'=>'high', //default, core, high, low
+		//'priority'=>'high', //default, core, high, low
 		//'show_on' => array(1) //show only on specified pages
 ));
 new sc_icon_meta(array('unique_id'=>'icon_test'));
 new sc_post_type_text_editors(array('unique_id'=>'test'));
+
+new sc_page_slider_images(array('unique_id'=>'gallery_1'));
+new sc_page_slider_images(array('unique_id'=>'gallery_2', 'single'=>true));
 
 //Theme Specific Functions
 include_once('inc/functions.php');

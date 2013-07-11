@@ -8,31 +8,240 @@ class sc_page_slider_images {
         //Build 'Defaults' Object
         public function build_options() {
             return array(
-                'unique_id'=>'sc_page_slider_images', //unique prefix
-                'post_types' => array('post', 'page'), //post types
-                'title'=>'Slider Images', //title
-                'context'=>'normal', //normal, advanced, side
-                'priority'=>'high', //default, core, high, low
+                'unique_id'   => 'sc_page_slider_images', //unique prefix
+                'single'      => false, //set more than one image
+                'post_types'  => array('post', 'page'), //post types
+                'title'       => 'Image(s)', //title
+                'context'     => 'normal', //normal, advanced, side
+                'priority'    => 'default', //default, core, high, low
+                'description' => '' //description text to appear in meta box
             );
         }
 
         public function custom_meta_add() {
 
             foreach($this->options->post_types as $post_type){
-                    add_meta_box(
-                        $this->options->unique_id, // Unique ID
-                        esc_html__( $this->options->title, 'example' ), //Title
-                        array(&$this, 'custom_meta_render' ), // Callback (builds html)
-                        $post_type, // Admin page (or post type)
-                        $this->options->context, // Context
-                        $this->options->priority, // Priority
-                        $callback_args = null
-                    );
+                add_meta_box(
+                    $this->options->unique_id, // Unique ID
+                    $this->options->description ? $this->options->title.' <span class="title-caption">'.$this->options->description.'</span>' : $this->options->title, //Title
+                    $this->options->single ? array(&$this, 'single_custom_meta_render') : array(&$this, 'multiple_custom_meta_render'), // Callback (builds html)
+                    $post_type, // Admin page (or post type)
+                    $this->options->single ? 'side' : 'normal' , // Context
+                    $this->options->priority, // Priority
+                    $callback_args = null
+                );
             }
 
         }
 
-        public function custom_meta_render($object, $box){
+        public function single_custom_meta_render($object, $box){
+
+            wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
+
+            global $post;
+
+            $image_src = '';
+
+            //$image = get_post_meta( $post->ID, $this->options->unique_id, true );
+            $image = is_array($image = get_post_meta( $post->ID, $this->options->unique_id, true )) ? $image[0] : $image ;
+
+            //Load CSS
+            add_action('admin_footer', array(&$this, 'load_single_css'), 998);
+            //Load JS
+            add_action('admin_footer', array(&$this, 'load_single_js'), 999);
+
+            ?>
+
+            <span class="add_new_slide button button-primary button-large" <?php echo isset($image) && wp_get_attachment_url($image) ? 'style="display:none;"' : '' ; ?>>Add New Image</span>
+
+            <?php if( isset($image) && wp_get_attachment_url( $image ) ): ?>
+
+                <div class="sc_gallery_item">
+                    <div class="image-mask" style="background-image:url('<?php echo wp_get_attachment_url( $image ) ?>');"></div>
+                    <input type="hidden" name="<?php echo $this->options->unique_id; ?>" class="upload_image_id" value="<?php echo $image; ?>" />
+                    <p>
+                        <a title="Set Slider Image" href="#" class="set-image">Set Image</a>
+                        <a title="Remove Slider Image" href="#" class="remove-image">Remove Image</a>
+                    </p>
+                </div>
+
+            <?php endif; ?>
+
+            <!-- template -->
+            <div class="new_image" style="display:none;">
+                <div class="image-mask"></div>
+                <input type="hidden" name="" class="upload_image_id" value="" />
+                <p>
+                    <a title="Set Slider Image" href="#" class="set-image">Set Image</a>
+                    <a title="Remove Slider Image" href="#" class="remove-image">Remove Image</a>
+                </p>
+            </div>
+            <!-- /template -->
+
+        <?php }
+
+
+        public function load_single_js(){ ?>
+
+            <script type="text/javascript">
+
+                (function(){
+
+                    jQuery(document).ready(function($){
+
+                        function sc_wp_gallery_images(unique_id, post_id){
+
+                            function init(){
+
+                                //save the send_to_editor handler function
+                                window.send_to_editor_default = window.send_to_editor;
+
+                                //Meta Containers
+                                this.currentItem = null,
+                                this.itemContainer = $('#'+unique_id);
+
+                                this.actions();
+                            }
+
+                            init.prototype.actions = function(){
+
+                                // handler function which is invoked after the user selects an image from the gallery popup.
+                                // this function displays the image and sets the id so it can be persisted to the post meta
+                                this.attach_image = function(html) {
+                                            
+                                    // store returned image html into a hidden image element
+                                    if( $('#temp_image').length > 0 ){
+                                        $('#temp_image').html(html);
+                                    } else {
+                                        $('body').append('<div id="temp_image">' + html + '</div>');
+                                    }
+
+                                    currentItem = self.currentItem;
+
+                                    var img = $('#temp_image').find('img');
+                                    
+                                    imgurl   = img.attr('src');
+                                    imgclass = img.attr('class');
+                                    imgid    = parseInt(imgclass.replace(/\D/g, ''), 10);
+                                    
+                                    currentItem.find('.upload_image_id').val(imgid);
+                                    currentItem.find('.remove-image').show();
+
+                                    //currentItem.find('img').attr('src', imgurl);
+                                    currentItem.find('.image-mask').attr('style','background-image: url("'+imgurl+'");'); 
+                                    try{tb_remove();}catch(e){};
+                                    currentItem.find('#temp_image').remove();
+                                    
+                                    // restore the send_to_editor handler function
+                                    window.send_to_editor = window.send_to_editor_default;
+
+                                    //Hide Add Button
+                                    self.itemContainer.find('.add_new_slide.button').hide();
+
+                                }
+
+                                //Set/Change Image After DOM Creation
+                                this.itemContainer.on('click', '.set-image', function(){
+                                    self.currentItem = $(this).closest('div');
+                                    // replace the default send_to_editor handler function with our own
+                                    window.send_to_editor = self.attach_image;
+                                    tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
+                                    return false;
+                                });
+
+                                //Remove Image From Container/DOM
+                                this.itemContainer.on('click', '.remove-image', function(){
+                                    var container = $(this).closest('div');
+                                    container.fadeOut(600, function(){
+                                        container.remove();
+                                        self.itemContainer.find('.add_new_slide.button').show();
+                                    });
+                                    return false;
+                                });                                
+
+                                //Add New Image
+                                this.itemContainer.on('click', '.button.add_new_slide', function(){
+                                        
+                                    var container = self.itemContainer,
+                                        newImage = container.find('div.new_image').clone();
+                                    
+                                    newImage.find('input.upload_image_id').attr({
+                                        'name': unique_id
+                                    });
+
+                                    self.currentItem = newImage;
+
+                                    container.append(newImage.show().attr('class', 'sc_gallery_item'));
+
+                                    // replace the default send_to_editor handler function with our own
+                                    window.send_to_editor = self.attach_image;
+                                    tb_show('', 'media-upload.php?post_id=' + post_id + '&amp;type=image&amp;TB_iframe=true');
+                                    return false;
+
+                                });
+
+                            }
+
+                            var self = new init();
+                            return self;
+
+                        }
+
+                        new sc_wp_gallery_images('<?php echo $this->options->unique_id; ?>', '<?php echo $post->ID ?>');
+
+                    });
+                }());
+            </script>
+
+        <?php }
+
+        public function load_single_css(){
+
+            //Set Parent Container Name.
+            $container = $this->options->unique_id;
+
+            ?>
+
+            <style>
+
+                #temp_image {
+                    display: none;
+                }
+
+                #<?php echo $container; ?> .title-caption {
+                    color:#888;
+                    font-size: 12px;
+                    font-style: italic;
+                    font-family: sans-serif;
+                }
+
+                #<?php echo $container; ?> .inside span.add_new_slide {
+                    position: relative;
+                    margin:10px auto;
+                    width:120px;
+                    display: block;
+                }
+
+                #<?php echo $container; ?> div.sc_gallery_item {
+                    text-align: center;
+                    margin:3%;
+                }
+
+                #<?php echo $container; ?> div.sc_gallery_item .image-mask{
+                    width:99%;
+                    height:166px;
+                    overflow: hidden;
+                    border-radius: 3px;
+                    border:1px solid #ccc;
+                    background-position: center center;
+                    background-size: cover;
+                }
+
+            </style>
+        
+        <?php }
+
+        public function multiple_custom_meta_render($object, $box){
 
             wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
@@ -42,18 +251,14 @@ class sc_page_slider_images {
 
             $images = get_post_meta( $post->ID, $this->options->unique_id, true );
 
-            //$image_src = wp_get_attachment_url( $image_id );
-
-            //var_dump($images);
-
             //Load CSS
-            add_action('admin_footer', array(&$this, 'load_css'), 998);
+            add_action('admin_footer', array(&$this, 'load_multiple_css'), 998);
             //Load JS
-            add_action('admin_footer', array(&$this, 'load_js'), 999);
+            add_action('admin_footer', array(&$this, 'load_multiple_js'), 999);
 
         ?>
 
-        <span class="add_new_slide button button-primary button-large">Add New Slide</span>
+        <span class="add_new_slide button button-primary button-large">Add New Image</span>
 
         <div class="clear"></div>
 
@@ -96,9 +301,9 @@ class sc_page_slider_images {
 
         <?php }
 
-        public function load_js(){ ?>
+        public function load_multiple_js(){ ?>
 
-            <script type="text/javascript">
+            <script>
 
                 (function(){
 
@@ -226,7 +431,7 @@ class sc_page_slider_images {
 
         <?php }
 
-        public function load_css(){
+        public function load_multiple_css(){
 
             //Set Parent Container Name.
             $container = $this->options->unique_id;
@@ -235,8 +440,15 @@ class sc_page_slider_images {
 
             <style>
 
-                #post-body-content {
+/*                #post-body-content {
                     display:none;
+                }*/
+
+                #<?php echo $container; ?> .title-caption {
+                    color:#888;
+                    font-size: 12px;
+                    font-style: italic;
+                    font-family: sans-serif;
                 }
 
                 #temp_image {
@@ -262,18 +474,17 @@ class sc_page_slider_images {
                     max-width: 160px;
                     height:200px;
                     margin:0 1.4% 2.8% 1.4%;
-                    background: #DFDFDF;
                     padding:1%;
                     border-radius: 3px;
                     cursor:move;
                     border:1px solid #ccc;
-                    background: #ffffff; /* Old browsers */
-                    background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%); /* FF3.6+ */
-                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf)); /* Chrome,Safari4+ */
-                    background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Chrome10+,Safari5.1+ */
-                    background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* Opera 11.10+ */
-                    background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%); /* IE10+ */
-                    background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%); /* W3C */
+                    background: #ffffff;
+                    background: -moz-linear-gradient(top,  #ffffff 0%, #dfdfdf 100%);
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dfdfdf));
+                    background: -webkit-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%);
+                    background: -o-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%);
+                    background: -ms-linear-gradient(top,  #ffffff 0%,#dfdfdf 100%);
+                    background: linear-gradient(to bottom,  #ffffff 0%,#dfdfdf 100%);
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dfdfdf',GradientType=0 ); /* IE6-9 */
                 }
                 ul.<?php echo $container; ?>_container li.clear {
