@@ -49,6 +49,22 @@ function remove_submenus() {
 
 //add_action('admin_menu', 'remove_submenus');
 
+/*
+|--------------------------------------------------------------------------
+| Hide Inline Editing
+|--------------------------------------------------------------------------
+*/
+
+function hide_quick_edit_css() { ?>
+  <style type="text/css">
+    .row-actions a.editinline {display:none!important}
+  </style>
+<?php }
+
+//add_action('admin_init','hide_quick_edit_css');
+
+
+
 //Hide WP Admin Bar
 add_filter('show_admin_bar', '__return_false');
 

@@ -1,7 +1,7 @@
 <?php
 
 /* Page Template Option */
-class sc_page_slider_images {
+class sc_post_gallery {
 
         public $options = null;
 
@@ -14,11 +14,17 @@ class sc_page_slider_images {
                 'title'       => 'Image(s)', //title
                 'context'     => 'normal', //normal, advanced, side
                 'priority'    => 'default', //default, core, high, low
-                'description' => '' //description text to appear in meta box
+                'description' => '', //description text to appear in meta box
+                'show_on'     => false //show only on specified pages (array of post ids)
             );
         }
 
         public function custom_meta_add() {
+
+            //Show Only On Specific Pages
+            if( $this->options->show_on && !in_array(get_the_id(), $this->options->show_on) ){
+                return false;
+            }
 
             foreach($this->options->post_types as $post_type){
                 add_meta_box(
@@ -542,6 +548,11 @@ class sc_page_slider_images {
         <?php }
 
         public function custom_meta_save($post_id, $post=false){
+
+                //Show Only On Specific Pages
+                if( $this->options->show_on && !in_array(get_the_id(), $this->options->show_on) ){
+                    return false;
+                }
 
                 /* Verify the nonce before proceeding. */
                 if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){

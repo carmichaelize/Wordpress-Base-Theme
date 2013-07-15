@@ -37,8 +37,8 @@ new sc_multichoice_meta(array(
 new sc_icon_meta(array('unique_id'=>'icon_test'));
 new sc_post_type_text_editors(array('unique_id'=>'test'));
 
-new sc_page_slider_images(array('unique_id'=>'gallery_1'));
-new sc_page_slider_images(array('unique_id'=>'gallery_2', 'single'=>true));
+new sc_post_gallery(array('unique_id'=>'gallery_1'));
+new sc_post_gallery(array('unique_id'=>'gallery_2', 'single'=>true));
 
 //Theme Specific Functions
 include_once('inc/functions.php');
