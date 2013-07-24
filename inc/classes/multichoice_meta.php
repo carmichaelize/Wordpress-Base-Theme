@@ -74,7 +74,7 @@ class sc_multichoice_meta {
 
 				<?php foreach($posts as $post): ?>
 
-					<option <?php echo in_array($post->ID, $list) ? 'style="display:none;"' : '' ; ?> value="<?php echo $post->ID ?>"><?php echo $post->post_title; ?></option>
+					<option <?php echo in_array($post->ID, $list) ? 'style="display:none;"' : '' ; ?> value="<?php echo $post->ID ?>"><?php echo Str::limit($post->post_title, 35); ?></option>
 
 				<?php endforeach; ?>
 
@@ -99,7 +99,7 @@ class sc_multichoice_meta {
 						<?php if($post->ID == $item) : ?>
 
 							<li class="button">
-								<?php echo $post->post_title; ?>
+								<?php echo Str::limit($post->post_title, 35); ?>
 								<input type="hidden" name="<?php echo $this->options->unique_id; ?>[]" value="<?php echo $post->ID; ?>" />
 								<span class="remove"></span>
 							</li>
