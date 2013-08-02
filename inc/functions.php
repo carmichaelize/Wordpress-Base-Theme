@@ -6,22 +6,27 @@
 |--------------------------------------------------------------------------
 */
 
-function load_the_scripts(){
+function load_the_scripts_first(){
 	//Register JS Scripts
 	wp_register_script('modernizr', TEMPLATE_PATH.'/js/modernizr-2.6.2.min.js', false, null, false);
 	wp_register_script('jQuery', TEMPLATE_PATH.'/js/jquery-1.9.1.min.js', false, null, true);
 	wp_register_script('utilities', TEMPLATE_PATH.'/js/utilities.js', false, null, true);
 	//wp_register_script('bootstrap', TEMPLATE_PATH.'/js/bootstrap.min.js', false, null, true);
-	wp_register_script('script', TEMPLATE_PATH.'/js/script.js', false, null, true);
+	
 	//Activate JS Scripts
 	wp_enqueue_script('modernizr');
 	wp_enqueue_script('jQuery');
 	wp_enqueue_script('utilities');
 	//wp_enqueue_script('bootstrap');
+}
+
+function load_the_scripts_last(){
+	wp_register_script('script', TEMPLATE_PATH.'/js/script.js', false, null, true);
 	wp_enqueue_script('script');
 }
 
-add_action('wp_enqueue_scripts', 'load_the_scripts');
+add_action('wp_enqueue_scripts_first', 'load_the_scripts', 0);
+add_action('wp_enqueue_scripts_last', 'load_the_scripts');
 
 //Add Google Analytics 
 if ( isset($global_options->google_analytics_key) && $global_options->google_analytics_key != "" ) {
