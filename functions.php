@@ -4,6 +4,7 @@
 define( 'TEMPLATE_PATH', get_bloginfo('stylesheet_directory') );
 define( 'TEMPLATE_ROOT', parse_url(TEMPLATE_PATH, PHP_URL_PATH) );
 define( 'IMAGE_PATH', TEMPLATE_PATH. "/images" );
+// WP_CONTENT_URL, WP_CONTENT_DIR
 
 //Get Global Theme Options
 $global_options = (object)get_option('sc_theme_options');
