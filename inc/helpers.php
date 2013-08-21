@@ -160,6 +160,7 @@ class Str {
 
 	public static function limit($string = '', $limit, $trail = '...'){
 		
+		//$class = new Class(); $class->functionName()
 		$string = trim(strip_tags($string));
 		return static::length($string) <= $limit ? $string : substr($string, 0, $limit).$trail ;
 
@@ -230,6 +231,8 @@ class Str {
 	*
 	*/
 	public static function slug($string, $separator = '-'){
+
+		//$class = new Class(); $class->functionName()
 		
 		// Remove all characters that are not the separator, letters, numbers, or whitespace.
 		$string = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($string));
