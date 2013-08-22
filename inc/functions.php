@@ -25,8 +25,8 @@ function load_the_scripts_last(){
 	wp_enqueue_script('script');
 }
 
-add_action('wp_enqueue_scripts_first', 'load_the_scripts', 0);
-add_action('wp_enqueue_scripts_last', 'load_the_scripts');
+add_action('wp_enqueue_scripts', 'load_the_scripts_first', 0);
+add_action('wp_enqueue_scripts', 'load_the_scripts_last');
 
 //Add Google Analytics 
 if ( isset($global_options->google_analytics_key) && $global_options->google_analytics_key != "" ) {
