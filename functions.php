@@ -22,6 +22,7 @@ include_once('inc/classes/page_editors.php');
 include_once('inc/classes/post_gallery.php');
 include_once('inc/classes/icon_meta.php');
 
+//http://codex.wordpress.org/Page_Templates#Custom_Page_Template
 
 new sc_theme_settings_page();
 // new sc_post_type_template_select(array('unique_id'=>'template_select'));
@@ -51,5 +52,8 @@ include_once('inc/admin_tidy.php');
 //add_action('init', function(){
 	//flush_rewrite_rules(false);
 //});
+
+/** Turn Off Revisions (Paste in wp-config.php) */
+//define('WP_POST_REVISIONS', false );
 
 ?>

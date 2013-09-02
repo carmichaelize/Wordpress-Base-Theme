@@ -49,12 +49,10 @@ class Input {
 	      (( strpos($_filter, "/") !== false) && ( strpos($_filter, "/") == 0))) {
 	        if ( !preg_match( $_filter, $_value)) {
 	          $_value = false;
-	              //echo "Error _sopt - unwanted chars";
 	          }
 	      }
 	      else
 	       if( strpos( $_value, $_filter) !== false) {
-	             //echo "$_value  | $_filter";
 	         Header( "HTTP/1.1 403 Forbidden" );
 	         exit;
 	         }
@@ -68,7 +66,6 @@ class Input {
 	      $_value = false;   
 	      }
 	 
-	      //echo $_value;
 	  return( $_value );
   	}
 
@@ -160,14 +157,9 @@ class Str {
 
 	public static function limit($string = '', $limit, $trail = '...'){
 		
-		//$class = new Class(); $class->functionName()
 		$string = trim(strip_tags($string));
-		return static::length($string) <= $limit ? $string : substr($string, 0, $limit).$trail ;
+		return strlen($string) <= $limit ? $string : substr($string, 0, $limit).$trail ;
 
-		// if (static::length($string) <= $limit){
-		// 	return $string;
-		// }
-		// return substr($string, 0, $limit).$trail;
 	}
 
 	/**
@@ -231,11 +223,9 @@ class Str {
 	*
 	*/
 	public static function slug($string, $separator = '-'){
-
-		//$class = new Class(); $class->functionName()
 		
 		// Remove all characters that are not the separator, letters, numbers, or whitespace.
-		$string = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($string));
+		$string = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', strtolower(strip_tags($string));
 
 		// Replace all separator characters and whitespace by a single separator
 		$string = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $string);
@@ -272,10 +262,7 @@ class Output {
 	public function odd_even($count = 1){
 
 		return $count % 2 == 0 ? "even" : "odd";
-		// if($count % 2 == 0){
-		// 	return "even";
-		// }
-		// return "odd";
+
 	}
 
 	/**
@@ -355,11 +342,7 @@ class Output {
 	public function date_format($date = '', $format = "d/m/Y"){
 		
 		return is_int($date) ? date( $format, $date ) : date_format( date_create($date), $format );
-
-		// if( is_int($date) ){
-		// 	return date( $format, $date );
-		// }
-		// return date_format( date_create($date), $format ); 		
+	
 	}
 
 }

@@ -22,7 +22,7 @@
 		<!--[if lt IE 9]>
 			<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie8.css" />
 	  	<![endif]-->
-		<!--[if IE 8]>
+		<!--[if lt IE 8]>
 	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.min.css" />
 	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie7.css" />
 	  	<![endif]-->
