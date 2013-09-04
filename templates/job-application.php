@@ -8,15 +8,15 @@ if( isset($_POST['submit']) ){
 
 	// Verify nonce before proceeding
 	if( !isset( $_POST['sc_application_form_nonce'] ) || !wp_verify_nonce( $_POST['sc_application_form_nonce'], basename( __FILE__ ) ) ){
-		$validation_message = "<span class='error' style='color:red;'>Security Fail !!!!</span>";
+		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Security Fail !!!!</span>";
 		$passes = false;
 	}
 
 	if( !$_POST['form_name'] || !$_POST['form_email'] || !$_POST['form_message'] ){
-		$validation_message = "<span class='error' style='color:red;'>Please Fill In All Fields</span>";
+		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Please Fill In All Fields</span>";
 		$passes = false;
 	} elseif( !preg_match('/@.+?\.(co.uk|com|org|gov|co|eu)$/', $_POST['form_email']) ){
-		$validation_message = "<span class='error' style='color:red;'>Please Provide A Valid Email Address</span>";
+		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Please Provide A Valid Email Address</span>";
 	 	$passes = false;
 	}
 
@@ -35,7 +35,7 @@ if( isset($_POST['submit']) ){
 			move_uploaded_file($_FILES["file"]["tmp_name"], WP_CONTENT_DIR .'/uploads/temp/'.basename($_FILES['file']['name']));
 			$attachment = array(WP_CONTENT_DIR ."/uploads/temp/".$_FILES["file"]["name"]);
 		} else {
-			echo "Invalid File Type";
+			$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Invalid File Type</span>";
 			$attachment = NULL;
 			$passes = false;
 		}
@@ -52,8 +52,10 @@ if( isset($_POST['submit']) ){
 		$message .= 'Tel: '.$_POST['form_phone']."\n\n";
 		$message .= "Cover Letter / Summary:\n".$_POST['form_message'];
 
-		$validation_message = "Thank you for your enquiry, we'll get back to you soon.";
-		wp_mail(get_bloginfo('admin_email'), "Job Application", $message, '', $attachment);
+		$validation_message = "<span class='success'>Thank you for your enquiry, we'll get back to you soon.</span>";
+
+		$headers = "From: ".get_bloginfo('name')." <".get_bloginfo('admin_email').">";
+		wp_mail(get_bloginfo('admin_email'), "Job Application", $message, $headers, $attachment);
 
 		//Delete Attachment
 		if($attachment){
