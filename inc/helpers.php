@@ -225,7 +225,7 @@ class Str {
 	public static function slug($string, $separator = '-'){
 		
 		// Remove all characters that are not the separator, letters, numbers, or whitespace.
-		$string = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', strtolower(strip_tags($string));
+		$string = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', strtolower(strip_tags($string)));
 
 		// Replace all separator characters and whitespace by a single separator
 		$string = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $string);

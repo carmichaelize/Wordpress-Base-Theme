@@ -2,7 +2,7 @@
 
 class page_meta {
 
-	public static function title(){
+	public static function title($id){
 
 		$site_title = get_bloginfo('name');
 		$page_title = get_the_title();
@@ -14,6 +14,12 @@ class page_meta {
 
 		// Single/Custom Posts & Pages
 		if( is_single() || is_page() ){
+			//Custom Meta Title (See meta_options.php)
+			if( $meta_title = get_post_meta($id, 'sc_seo_meta_data', true ) ){
+				if($meta_title['title'] != ''){
+					return $meta_title['title'];
+				}
+			}
 			return $page_title.' - '.$site_title;
 		}
 
@@ -50,7 +56,7 @@ class page_meta {
 
 	}
 
-	public static function description(){
+	public static function description($id){
 
 		//Archive Page Description
 		if( is_archive() ){
@@ -69,10 +75,19 @@ class page_meta {
 
 		// Single/Custom Posts & Pages
 		if( is_single() || is_page() ){
+			
+			//Custom Meta Description (See meta_options.php)
+			if( $meta_title = get_post_meta($id, 'sc_seo_meta_data', true ) ){
+				if($meta_title['description'] != ''){
+					return $meta_title['description'];
+				}
+			}
+
 			global $post;
 			if( $post->post_content ){
 				return Str::limit( $post->post_content, 160 );
 			}
+
 		}
 
 		return Str::limit( get_bloginfo('description'), 160 );

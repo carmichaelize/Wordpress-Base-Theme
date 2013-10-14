@@ -7,8 +7,12 @@
 		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 
 		<!-- Page Meta Class ('inc/wp_helpers.php') -->
-		<title><?php echo page_meta::title(); ?></title>
-		<meta name="description" content="<?php echo page_meta::description(); ?>" />
+
+
+				<?php //global $post; var_dump($post->ID)?>
+
+		<title><?php echo page_meta::title($post->ID); ?></title>
+		<meta name="description" content="<?php echo page_meta::description($post->ID); ?>" />
 		<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
 
 		<!-- Enable Responsive Techniques -->

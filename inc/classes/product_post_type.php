@@ -71,7 +71,10 @@ class sc_product_post_type {
 			//Users -300px -33px, -300px -1px
 			//Apperance 1px -33px, 1px -1px
 			//Tools -209px -33px, -209px -1px
-			//Settings -239px -33px, -239px -1px ?>
+			//Settings -239px -33px, -239px -1px
+			//Cog -329px -33px, -329px -1px 
+
+		?>
 
 		<style>
 		    #menu-posts-products .wp-menu-image {

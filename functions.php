@@ -15,16 +15,19 @@ include_once('inc/wp_helpers.php');
 
 //Custom Classes
 include_once('inc/classes/settings_page.php');
+include_once('inc/classes/meta_options.php');
 //include_once('inc/classes/product_post_type.php');
-include_once('inc/classes/template_options.php');
+//include_once('inc/classes/template_options.php');
 include_once('inc/classes/multichoice_meta.php');
 include_once('inc/classes/page_editors.php');
 include_once('inc/classes/post_gallery.php');
 include_once('inc/classes/icon_meta.php');
 
-//http://codex.wordpress.org/Page_Templates#Custom_Page_Template
+//Page Template Select page-{template_name}.php && // Template Name: My Custom Page //
+//get_page_template() is_page_template()
 
 new sc_theme_settings_page();
+new sc_meta_options(array('post_types'=>array('post', 'page')));
 // new sc_post_type_template_select(array('unique_id'=>'template_select'));
 // new sc_product_post_type();
 // new sc_multichoice_meta(array(
