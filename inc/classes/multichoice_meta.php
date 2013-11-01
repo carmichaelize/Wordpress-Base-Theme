@@ -193,7 +193,8 @@ class sc_multichoice_meta {
                 background: -webkit-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
                 background: -o-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
                 background: -ms-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
-                background: linear-gradient(to bottom,  #F9F9F9 0%,#dfdfdf 100%);	
+                background: linear-gradient(to bottom,  #F9F9F9 0%,#dfdfdf 100%);
+                line-height:2.4em;
 			}
 
 			#<?php echo $this->options->unique_id ?>_container .button span.remove{

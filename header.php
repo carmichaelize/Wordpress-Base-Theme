@@ -7,10 +7,6 @@
 		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 
 		<!-- Page Meta Class ('inc/wp_helpers.php') -->
-
-
-				<?php //global $post; var_dump($post->ID)?>
-
 		<title><?php echo page_meta::title($post->ID); ?></title>
 		<meta name="description" content="<?php echo page_meta::description($post->ID); ?>" />
 		<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
@@ -27,22 +23,22 @@
 			<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie8.css" />
 	  	<![endif]-->
 		<!--[if lt IE 8]>
-	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.min.css" />
+	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/font-awesome-ie7.css" />
 	    	<link rel="stylesheet" href="<?php echo TEMPLATE_PATH; ?>/css/ie7.css" />
 	  	<![endif]-->
 
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
 		<?php wp_head(); ?>
-		
+
 	</head>
 
 	<body>
 
 		<div class="wrapper">
 
-			<?php get_search_form(); ?> 
-			
+			<?php get_search_form(); ?>
+
 			<header id="header">
 
 				<a href="<?php echo get_option('home'); ?>"><?php bloginfo('name'); ?></a>
@@ -52,7 +48,7 @@
 						wp_nav_menu(array(
 							'theme_location' => 'navigation-menu',
 							'container'=> 'nav',
-							'container_class' => 'top-nav',							
+							'container_class' => 'top-nav',
 							'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s<div class="clear"></div></ul>',
 							'sort_column' => 'menu_order'
 						));

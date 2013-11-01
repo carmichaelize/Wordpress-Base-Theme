@@ -12,7 +12,7 @@ function load_the_scripts_first(){
 	wp_register_script('jQuery', TEMPLATE_PATH.'/js/jquery-1.9.1.min.js', false, null, true);
 	wp_register_script('utilities', TEMPLATE_PATH.'/js/utilities.js', false, null, true);
 	//wp_register_script('bootstrap', TEMPLATE_PATH.'/js/bootstrap.min.js', false, null, true);
-	
+
 	//Activate JS Scripts
 	wp_enqueue_script('modernizr');
 	wp_enqueue_script('jQuery');
@@ -23,12 +23,13 @@ function load_the_scripts_first(){
 function load_the_scripts_last(){
 	wp_register_script('script', TEMPLATE_PATH.'/js/script.js', false, null, true);
 	wp_enqueue_script('script');
+	//wp_localize_script( 'script', 'AjaxObject', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 }
 
 add_action('wp_enqueue_scripts', 'load_the_scripts_first', 0);
 add_action('wp_enqueue_scripts', 'load_the_scripts_last');
 
-//Add Google Analytics 
+//Add Google Analytics
 if ( isset($global_options->google_analytics_key) && $global_options->google_analytics_key != "" ) {
 	function add_google_analytics() {
 		global $global_options;
@@ -51,7 +52,7 @@ if( function_exists('register_sidebar') ){
 
 //Create Footer Widgets
 function footer_widgets() {
-	
+
 	register_sidebar( array(
 		'name' => __( 'Footer Widget Area'),
 		'id' => 'footer-widget-area',
@@ -69,7 +70,7 @@ add_action( 'init', 'footer_widgets' );
 | Custom Menus
 |--------------------------------------------------------------------------
 */
-    
+
 //Create Primary Navigation
 function activate_menus() {
 	register_nav_menu( 'navigation-menu', 'Main Menu');

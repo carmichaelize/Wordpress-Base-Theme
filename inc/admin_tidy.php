@@ -84,6 +84,7 @@ function remove_admin_bar_links() {
     //$wp_admin_bar->remove_menu('new-content');      // Remove the content link
     //$wp_admin_bar->remove_menu('w3tc');             // If you use w3 total cache remove the performance link
     //$wp_admin_bar->remove_menu('my-account');       // Remove the user details tab
+    //$wp_admin_bar->remove_menu('view');             //Remove View Post Tab
 }
 add_action( 'wp_before_admin_bar_render', 'remove_admin_bar_links' );
 

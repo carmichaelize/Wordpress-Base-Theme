@@ -11,7 +11,7 @@
 			<div class="post">
 
 				<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-					
+
 				<?php Str::limit( get_the_content(), 300); ?>
 
 				<br /><br />
@@ -19,7 +19,7 @@
 				<a href="<?php the_permalink(); ?>">Read More</a>
 
 			</div>
-			
+
 			<?php endwhile; ?>
 
 			<div class="navigation">

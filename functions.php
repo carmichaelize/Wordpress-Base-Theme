@@ -10,7 +10,9 @@ define( 'IMAGE_PATH', TEMPLATE_PATH. "/images" );
 $global_options = (object)get_option('sc_theme_options');
 
 //Helper Functions
-include_once('inc/helpers.php');
+if ( !class_exists('Str') ) {
+	include_once('inc/helpers.php');
+}
 include_once('inc/wp_helpers.php');
 
 //Custom Classes
@@ -42,7 +44,7 @@ new sc_meta_options(array('post_types'=>array('post', 'page')));
 // new sc_icon_meta(array('unique_id'=>'icon_test'));
 // new sc_post_type_text_editors(array('unique_id'=>'test'));
 
-// new sc_post_gallery(array('unique_id'=>'gallery_1'));
+new sc_post_gallery(array('unique_id'=>'gallery_1'));
 // new sc_post_gallery(array('unique_id'=>'gallery_2', 'single'=>true));
 
 //Theme Specific Functions
