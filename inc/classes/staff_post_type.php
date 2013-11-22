@@ -15,7 +15,7 @@ class sc_staff_post_type {
 				'view_item' => __( 'View Staff Member' ),
 				'search_items'  => __( 'Search Staff Members' ),
 				'not_found' => __( 'No staff members found.' ),
-				'not_found_in_trash' => __( 'No staff members found in the trash.' ), 
+				'not_found_in_trash' => __( 'No staff members found in the trash.' ),
 				'parent_item_colon' => '',
 				'menu_name' => 'Staff'
 			),
@@ -63,7 +63,7 @@ class sc_staff_post_type {
 	// 	register_taxonomy( 'location', 'products', $this->post_taxonomy_options() );
 	// }
 
-	public function post_type_menu_image(){ 
+	public function post_type_menu_image(){
 		//Menu Sprite Positions (remeber to change CSS selector below!)
 			//Page -149px -33px, -149px -1px
 			//Speech Buble -29px -33px, -29px -1px
@@ -81,7 +81,7 @@ class sc_staff_post_type {
 		        background-position: -300px -1px !important;
 		    }
 		</style>
-	
+
 	<?php }
 
 
@@ -118,12 +118,10 @@ class sc_staff_post_type {
 
 	public function custom_meta_render($object, $box){
 
-		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
+		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' );
 
-		$data = get_post_meta($object->ID, $this->options->unique_id, $new_meta_value, true);
+		$data = get_post_meta($object->ID, $this->options->unique_id, true);
 
-		$data = $data[0];
-		//var_dump($data);
 		?>
 
 			<p>
@@ -144,7 +142,7 @@ class sc_staff_post_type {
 				<textarea class="regular-text" style="width:25em;" name="<?php echo $this->options->unique_id; ?>[experience]" ><?php echo $data['experience']; ?></textarea>
 			</p>
 
-			<?php 
+			<?php
 				if( $data['address'] ){
 					$address = $data['address'];
 				} else {
@@ -158,7 +156,7 @@ class sc_staff_post_type {
 				<textarea class="regular-text" style="width:25em;" name="<?php echo $this->options->unique_id; ?>[address]" ><?php echo $address; ?></textarea>
 			</p>
 
-			<?php 
+			<?php
 				if( $data['phone'] ){
 					$phone = $data['phone'];
 				} else {
@@ -172,7 +170,7 @@ class sc_staff_post_type {
 				<input type="text" class="regular-text" name="<?php echo $this->options->unique_id; ?>[phone]" value="<?php echo $phone; ?>" />
 			</p>
 
-			<?php 
+			<?php
 				if( $data['fax'] ){
 					$fax = $data['fax'];
 				} else {
@@ -192,37 +190,35 @@ class sc_staff_post_type {
 				<input type="text" class="regular-text" name="<?php echo $this->options->unique_id; ?>[email]" value="<?php echo $data['email'] ?>" />
 			</p>
 
-		<?php 
-		}
+		<?php }
 
 	public function custom_meta_save($post_id, $post=false){
 
-		/* Verify the nonce before proceeding. */
+		// Verify the nonce before proceeding.
 		if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
 			return $post_id;
 		}
-			
-		/* Get the posted data and sanitize it for use as an HTML class. */
+
+		// Get the posted data and sanitize it for use as an HTML class.
 		$new_meta_value = ( isset( $_POST[$this->options->unique_id] ) ? $_POST[$this->options->unique_id] : '' );
 
-		/* Get the meta value of the custom field key. */
+		// Get the meta value of the custom field key. */
 		$meta_value = get_post_meta( $post_id, $this->options->unique_id, true );
 
-		/* If a new meta value was added and there was no previous value, add it. */
+		// If a new meta value was added and there was no previous value, add it.
 		if ( $new_meta_value && '' == $meta_value ){
 			add_post_meta( $post_id, $this->options->unique_id, $new_meta_value, true );
-		}	
+		}
 
-		/* If the new meta value does not match the old value, update it. */
+		// If the new meta value does not match the old value, update it.
 		elseif ( $new_meta_value && $new_meta_value != $meta_value ){
 			update_post_meta( $post_id, $this->options->unique_id, $new_meta_value );
 		}
-			
-		/* If there is no new meta value but an old value exists, delete it. */
+
+		// If there is no new meta value but an old value exists, delete it.
 		elseif ( '' == $new_meta_value && $meta_value ){
 			delete_post_meta( $post_id, $this->options->unique_id, $meta_value );
 		}
-			
 
 	}
 
@@ -233,14 +229,14 @@ class sc_staff_post_type {
 
 		/* Save Box */
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
-		
+
 	}
 
 	public function __construct(){
-		
+
 		//Add Post Custom Type
 		add_action( 'init', array(&$this, 'post_type_setup') );
-		
+
 		//Add Taxonomy to Custom Post type
 		//add_action( 'init', array(&$this, 'post_taxonomy_setup'), 0 );
 
@@ -251,9 +247,7 @@ class sc_staff_post_type {
 		$this->options = $this->build_options();
 		//Add Custom Meta
 		add_action( 'init', array(&$this, 'custom_meta_setup'));
-		
-		//Reset Rewrites
-		//flush_rewrite_rules(false);
+
 	}
 
 }

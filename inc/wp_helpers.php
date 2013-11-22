@@ -31,11 +31,11 @@ class page_meta {
 			}
 
 			// Date Archive
-			if( is_day() ) { 
+			if( is_day() ) {
 				return get_the_time('F jS, Y').' - '.$site_title;
-			} elseif ( is_month() ) { 
-				return get_the_time('F, Y').' - '.$site_title; 
-			} elseif ( is_year() ) { 
+			} elseif ( is_month() ) {
+				return get_the_time('F, Y').' - '.$site_title;
+			} elseif ( is_year() ) {
 				return get_the_time('Y').' - '.$site_title;
 			}
 
@@ -70,12 +70,12 @@ class page_meta {
 			if( category_description() ){
 				return  Str::limit( category_description(), 160 );
 			}
-			
+
 		}
 
 		// Single/Custom Posts & Pages
 		if( is_single() || is_page() ){
-			
+
 			//Custom Meta Description (See meta_options.php)
 			if( $meta_title = get_post_meta($id, 'sc_seo_meta_data', true ) ){
 				if($meta_title['description'] != ''){
@@ -94,18 +94,17 @@ class page_meta {
 
 	}
 
-	public static function keywords(){
-
-		//$tags = get_taxonomies();
-
-		//$tags = get_the_terms($post->id, 'location');
-
-		//$tags = get_the_term_list($post->id, 'location');
-
-		//dd($tags);
+	public static function keywords($id){
 
 		if( is_single() || is_page()){
-			
+
+			//Custom Meta Keywords (See meta_options.php)
+			if( $meta_keywords = get_post_meta($id, 'sc_seo_meta_data', true ) ){
+				if($meta_keywords['keywords'] != ''){
+					return $meta_keywords['keywords'];
+				}
+			}
+
 			$tags = get_the_tags();
 
 			if($tags){

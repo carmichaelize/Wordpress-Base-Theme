@@ -20,7 +20,7 @@ include_once('inc/classes/settings_page.php');
 include_once('inc/classes/meta_options.php');
 //include_once('inc/classes/product_post_type.php');
 //include_once('inc/classes/template_options.php');
-include_once('inc/classes/multichoice_meta.php');
+include_once('inc/classes/mockingbird/index.php');
 include_once('inc/classes/page_editors.php');
 include_once('inc/classes/post_gallery.php');
 include_once('inc/classes/icon_meta.php');
@@ -32,17 +32,12 @@ new sc_theme_settings_page();
 new sc_meta_options(array('post_types'=>array('post', 'page')));
 // new sc_post_type_template_select(array('unique_id'=>'template_select'));
 // new sc_product_post_type();
-// new sc_multichoice_meta(array(
-// 		'unique_id'=>'sc_multichoice_meta', //unique prefix
-// 		'post_types' => array('post'), //post type to display on
-// 		'post_types_to_display' => array('post', 'page'), //post types to be included in list
-// 		'title'=>'Related Content', //meta box title
-// 		'context'=>'side', //normal, advanced, side
-// 		//'priority'=>'high', //default, core, high, low
-// 		//'show_on' => array(1) //show only on specified pages
-// ));
 // new sc_icon_meta(array('unique_id'=>'icon_test'));
 // new sc_post_type_text_editors(array('unique_id'=>'test'));
+if( is_admin() ){
+	new Mockingbird_admin( 'sc_related_pages' );
+	//get_mockingbird(get_the_id(), false, 'sc_related_pages')
+}
 
 new sc_post_gallery(array('unique_id'=>'gallery_1'));
 // new sc_post_gallery(array('unique_id'=>'gallery_2', 'single'=>true));

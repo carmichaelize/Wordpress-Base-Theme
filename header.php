@@ -9,7 +9,7 @@
 		<!-- Page Meta Class ('inc/wp_helpers.php') -->
 		<title><?php echo page_meta::title($post->ID); ?></title>
 		<meta name="description" content="<?php echo page_meta::description($post->ID); ?>" />
-		<meta name="keywords" content="<?php echo page_meta::keywords(); ?>" />
+		<meta name="keywords" content="<?php echo page_meta::keywords($post->ID); ?>" />
 
 		<!-- Enable Responsive Techniques -->
 	  	<!--<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />-->

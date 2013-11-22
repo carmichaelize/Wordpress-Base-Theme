@@ -41,9 +41,8 @@ class sc_post_type_text_editors {
 
 		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
 
-		$data = get_post_meta($object->ID, $this->options->unique_id, $new_meta_value, true);
+		$data = get_post_meta($object->ID, $this->options->unique_id, true);
 
-		$data = $data[0];
 		$count = 0;
 
 		?>
@@ -59,7 +58,7 @@ class sc_post_type_text_editors {
 				<p>
 					<input id="<?php echo $item; ?>_title" type="text" class="regular-text" name="<?php echo $this->options->unique_id; ?>[<?php echo $item; ?>_title]" value="<?php echo $data[$item.'_title']; ?>" />
 				</p>
-				
+
 				<textarea class="wp_themeSkin" id="tinymce_<?php echo  $count; ?>" class="mceEditor" name="<?php echo $this->options->unique_id?>[<?php echo $item; ?>_text]"><?php echo $data[$item.'_text']; ?></textarea>
 
 			</div>
@@ -68,8 +67,7 @@ class sc_post_type_text_editors {
 
 		<br />
 
-		<?php 
-	}
+	<?php }
 
 	public function load_css(){ ?>
 
@@ -135,10 +133,9 @@ class sc_post_type_text_editors {
 
 		</style>
 
-	<?php
-	}
+	<?php }
 
-	public function load_js(){ 
+	public function load_js(){
 
 		$count = 0;
 
@@ -184,46 +181,38 @@ class sc_post_type_text_editors {
 
 		</script>
 
-	<?php
-	}
+	<?php }
 
 	public function custom_meta_save($post_id, $post=false){
 
-		/* Verify the nonce before proceeding. */
+		// Verify the nonce before proceeding.
 		if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
 			return $post_id;
 		}
-			
-		/* Get the post type object. */
+
+		// Get the post type object.
 		$post_type = get_post_type_object( $post->post_type );
 
-		/* Check if the current user has permission to edit the post. */
-		// if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
-		// 	return $post_id;
-		// }
-			
-		/* Get the posted data and sanitize it for use as an HTML class. */
+		// Get the posted data and sanitize it for use as an HTML class.
 		$new_meta_value = ( isset( $_POST[$this->options->unique_id] ) ? $_POST[$this->options->unique_id] : '' );
 
-		/* Get the meta value of the custom field key. */
+		// Get the meta value of the custom field key. */
 		$meta_value = get_post_meta( $post_id, $this->options->unique_id, true );
 
-		/* If a new meta value was added and there was no previous value, add it. */
+		// If a new meta value was added and there was no previous value, add it.
 		if ( $new_meta_value && '' == $meta_value ){
 			add_post_meta( $post_id, $this->options->unique_id, $new_meta_value, true );
-		}	
+		}
 
-		/* If the new meta value does not match the old value, update it. */
+		// If the new meta value does not match the old value, update it.
 		elseif ( $new_meta_value && $new_meta_value != $meta_value ){
 			update_post_meta( $post_id, $this->options->unique_id, $new_meta_value );
 		}
-			
 
-		/* If there is no new meta value but an old value exists, delete it. */
+		// If there is no new meta value but an old value exists, delete it.
 		elseif ( '' == $new_meta_value && $meta_value ){
 			delete_post_meta( $post_id, $this->options->unique_id, $meta_value );
 		}
-			
 
 	}
 
@@ -233,7 +222,7 @@ class sc_post_type_text_editors {
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 		// Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
-		
+
 	}
 
 	public function __construct($params = array()){

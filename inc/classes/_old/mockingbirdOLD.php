@@ -47,7 +47,7 @@ class sc_multichoice_meta {
         //Load JS
         add_action('admin_footer', array(&$this, 'load_js'), 999);
 
-		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' ); 
+		wp_nonce_field( basename( __FILE__ ), $this->options->unique_id.'_nonce' );
 
 		//Get Preset Data
 		$list = is_array( $list = get_post_meta($object->ID, $this->options->unique_id, true) ) ? $list : array() ;
@@ -62,7 +62,7 @@ class sc_multichoice_meta {
 		$post_query = new WP_Query( $args );
 		$posts = $post_query->posts;
 
-	?>		
+	?>
 
 		<p><em><?php echo $this->options->description; ?></em></p>
 
@@ -107,7 +107,7 @@ class sc_multichoice_meta {
 						<?php break; endif; ?>
 
 					<?php endforeach; ?>
-				
+
 				<?php endforeach; ?>
 
 			<?php endif; ?>
@@ -132,7 +132,7 @@ class sc_multichoice_meta {
 						label = $(this).children('option[value='+value+']').text();
 
 					if(value){
-						
+
 						//Prepare and Add New Item to List
 						var new_item = selection_list.children('.button.temp').clone();
 						new_item.removeClass('temp').prepend(label).children('input').attr({
@@ -153,12 +153,12 @@ class sc_multichoice_meta {
 
 				//Remove Item
 				selection_list.on('click', 'span.remove', function(){
-					
+
 					//Fade Out and Remove Item From List
 					$(this).parent('li').fadeOut(300, function(){
 						$(this).remove();
 					});
-					
+
 					//Readd Option to Select Box
 					select_box.children('option[value='+$(this).siblings('input').val()+']').show();
 				});
@@ -184,7 +184,7 @@ class sc_multichoice_meta {
 
 			#<?php echo $this->options->unique_id ?>_container .button{
 				display: block;
-				margin-bottom: 4px;
+				margin-bottom: 6px;
 				position: relative;
 				cursor: move;
 				background: #ffffff;
@@ -194,19 +194,21 @@ class sc_multichoice_meta {
                 background: -o-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
                 background: -ms-linear-gradient(top,  #F9F9F9 0%,#dfdfdf 100%);
                 background: linear-gradient(to bottom,  #F9F9F9 0%,#dfdfdf 100%);
-                line-height:2.4em;
+                line-height:30px;
+                height:30px;
 			}
 
 			#<?php echo $this->options->unique_id ?>_container .button span.remove{
 				position: absolute;
 				top:0;
 				right:0;
-				background: transparent url('/wp-admin/images/xit.gif') center left no-repeat;
+				background: transparent url('<?php echo TEMPLATE_PATH; ?>/inc/classes/images/icon_cross.png') center left no-repeat;
 				width:10px;
 				height: 100%;
 				right:8px;
 				display: inline-block;
 				cursor: pointer;
+				opacity: 0.4;
 			}
 
 			#<?php echo $this->options->unique_id ?>_container li.temp {
@@ -229,15 +231,10 @@ class sc_multichoice_meta {
 		if ( !isset( $_POST[$this->options->unique_id.'_nonce'] ) || !wp_verify_nonce( $_POST[$this->options->unique_id.'_nonce'], basename( __FILE__ ) ) ){
 			return $post_id;
 		}
-			
+
 		/* Get the post type object. */
 		$post_type = get_post_type_object( $post->post_type );
 
-		/* Check if the current user has permission to edit the post. */
-		// if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
-		// 	return $post_id;
-		// }
-			
 		/* Get the posted data and sanitize it for use as an HTML class. */
 		$new_meta_value = ( isset( $_POST[$this->options->unique_id] ) ? sanitize_html_class( $_POST[$this->options->unique_id] ) : '' );
 
@@ -247,18 +244,17 @@ class sc_multichoice_meta {
 		/* If a new meta value was added and there was no previous value, add it. */
 		if ( $new_meta_value && '' == $meta_value ){
 			add_post_meta( $post_id, $this->options->unique_id, $new_meta_value, true );
-		}	
+		}
 
 		/* If the new meta value does not match the old value, update it. */
 		elseif ( $new_meta_value && $new_meta_value != $meta_value ){
 			update_post_meta( $post_id, $this->options->unique_id, $new_meta_value );
 		}
-			
+
 		/* If there is no new meta value but an old value exists, delete it. */
 		elseif ( '' == $new_meta_value && $meta_value ){
 			delete_post_meta( $post_id, $this->options->unique_id, $meta_value );
 		}
-			
 
 	}
 
@@ -268,7 +264,7 @@ class sc_multichoice_meta {
 		add_action( 'add_meta_boxes', array(&$this, 'custom_meta_add' ));
 		//Save Box
 		add_action( 'save_post', array(&$this, 'custom_meta_save'));
-		
+
 	}
 
 	public function __construct($params = array()){

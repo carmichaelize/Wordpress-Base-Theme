@@ -15,7 +15,7 @@ class sc_product_post_type {
 				'view_item' => __( 'View Product' ),
 				'search_items'  => __( 'Search Products' ),
 				'not_found' => __( 'No products found' ),
-				'not_found_in_trash' => __( 'No products found in the Trash' ), 
+				'not_found_in_trash' => __( 'No products found in the Trash' ),
 				'parent_item_colon' => '',
 				'menu_name' => 'Products'
 			),
@@ -63,7 +63,7 @@ class sc_product_post_type {
 	// 	register_taxonomy( 'location', 'products', $this->post_taxonomy_options() );
 	// }
 
-	public function post_type_menu_image(){ 
+	public function post_type_menu_image(){
 		//Menu Sprite Positions (remeber to change CSS selector below!)
 			//Page -149px -33px, -149px -1px
 			//Speech Buble -29px -33px, -29px -1px
@@ -72,7 +72,7 @@ class sc_product_post_type {
 			//Apperance 1px -33px, 1px -1px
 			//Tools -209px -33px, -209px -1px
 			//Settings -239px -33px, -239px -1px
-			//Cog -329px -33px, -329px -1px 
+			//Cog -329px -33px, -329px -1px
 
 		?>
 
@@ -84,22 +84,20 @@ class sc_product_post_type {
 		        background-position: -149px -1px !important;
 		    }
 		</style>
-	
+
 	<?php }
 
 	public function __construct(){
-		
+
 		//Add Post Custom Type
 		add_action( 'init', array(&$this, 'post_type_setup') );
-		
+
 		//Add Taxonomy to Custom Post type
 		//add_action( 'init', array(&$this, 'post_taxonomy_setup'), 0 );
 
 		//Set Menu Image From Admin Sprite
 		add_action( 'admin_head', array(&$this, 'post_type_menu_image') );
-		
-		//Reset Rewrites
-		//flush_rewrite_rules(false);
+
 	}
 
 }

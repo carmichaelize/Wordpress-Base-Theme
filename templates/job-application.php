@@ -22,7 +22,7 @@ if( isset($_POST['submit']) ){
 
 	//CV Upload
 	if($_FILES['file']['error'] == UPLOAD_ERR_OK) {
-	    		
+
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$mime = finfo_file($finfo, $_FILES['file']['tmp_name']);
 
@@ -113,9 +113,9 @@ if( isset($_POST['submit']) ){
 	<label for="contact_file">Upload CV:</label>
 	<br />
 	<input type="file" id="contact_file" name="file" size="20">
-	
+
 	<br /><br />
 
 	<button name="submit">Submit</button>
-	
+
 </form>

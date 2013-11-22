@@ -11,7 +11,7 @@ if( isset($_POST['submit']) ){
 		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Security Fail !!!!</span>";
 		$passes = false;
 	}
-	
+
 	if( !$_POST['form_name'] || !$_POST['form_email'] || !$_POST['form_message'] ){
 		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Please Fill In All Fields</span>";
 		$passes = false;
@@ -19,13 +19,13 @@ if( isset($_POST['submit']) ){
 		$validation_message = "<span class='error'><i class='icon-remove-sign'></i> Please Provide A Valid Email Address</span>";
 	 	$passes = false;
 	}
-	
+
 	if( $passes ) {
 		//Build Message
 		$message = 'Name: '.$_POST['form_name']."\n";
 		$message .= 'Email: '.$_POST['form_email']."\n";
 		$message .= "Message:\n".$_POST['form_message'];
-		
+
 		$validation_message = "<span class='success'>Thank you for your enquiry, we'll get back to you soon.</span>";
 
 		//add_filter( 'wp_mail_content_type', 'set_html_content_type' );
@@ -33,11 +33,11 @@ if( isset($_POST['submit']) ){
 		wp_mail(get_bloginfo('admin_email'), "Website Enquiry", $message, $headers );
 
 	}
-	
+
 } else {
 	$passes = false;
 }
-	
+
 ?>
 
 <?php echo $validation_message; ?>

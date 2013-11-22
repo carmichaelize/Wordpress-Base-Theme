@@ -221,20 +221,16 @@ h6 {
 
 /* iPads (landscape) ----------- */
 @media only screen and (max-width : 1024px) {
- 
 }
 
 /* iPads (portrait) ----------- */
 @media only screen and (max-width : 768px) {
-  
 }
 
 /* Smartphones (landscape) ----------- */
 @media only screen and (max-width : 480px) {
- 
 }
 
 /* Smartphones (portrait) ----------- */
 @media only screen and (max-width : 320px) {
- 
 }
