@@ -74,10 +74,10 @@ class sc_testimonial_post_type {
 
 		<style>
 		    #menu-posts-testimonials .wp-menu-image {
-		        background-position: -29px -33px !important;
+		        background-position: -300px -33px !important;
 		    }
 		    #menu-posts-testimonials:hover .wp-menu-image {
-		        background-position: -29px -1px !important;
+		        background-position: -300px -1px !important;
 		    }
 		</style>
 
