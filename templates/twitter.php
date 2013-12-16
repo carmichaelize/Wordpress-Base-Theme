@@ -22,21 +22,6 @@
 				'include_rts'	  => true
 			);
 
-		// $tmhOAuth = new tmhOAuth(array(
-		//   'host' => 'api.twitter.com',
-		//   'consumer_key'    => 'AuXOwVBhgygxGjvfqRrptQ',
-		//   'consumer_secret' => 'n7fHfmdIJQCruMspqABCLKPmWqpXvLGdnXawDI',
-		//   'user_token'      => '108360078-vGPPppI2k7zyKS99TnjOPJ2E865W40KP4HbXtvJO',
-		//   'user_secret'     => '0iPW5qnQXHTrQsu0qvht30N35qJooUsPLAdIj2BXtw'
-		// ));
-
-		// $query_options = array(
-		// 		'screen_name'     => 'DundeeCAquatics',
-		// 		'count'		      => 4,
-		// 		'exclude_replies' => true,
-		// 		'include_rts'	  => true
-		// 	);
-
 		$tmhOAuth->request('GET', $tmhOAuth->url('1.1/statuses/user_timeline'), $query_options);
 
 		$response = $tmhOAuth->response;
